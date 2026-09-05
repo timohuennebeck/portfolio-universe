@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400;500;600&amp;display=swap" rel="stylesheet">
+  <script src="./doc-page.js"></script>
+  <style>
+    html,body{margin:0;padding:0;print-color-adjust:exact;-webkit-print-color-adjust:exact}
+    a{color:#9fd3ff;text-decoration:none}a:hover{color:#fff}
+    doc-page:not(:defined){visibility:hidden}
+  </style>
+</helmet>
+<doc-page size="a4">
+  <section class="page" data-screen-label="1 Portfolio" style="position:relative;background:#02040a;color:#eef2f8;font-family:'Familjen Grotesk',Helvetica,sans-serif;overflow:hidden;-webkit-font-smoothing:antialiased">
+    <a href="{{ url }}" style="position:absolute;left:0;top:110px;width:100%;height:620px;display:block"><img src="assets/galaxy-hero.png" alt="" style="width:100%;height:100%;object-fit:cover;object-position:51.8% 50%;display:block"></a>
+    <div style="position:absolute;left:0;top:110px;width:100%;height:620px;background:linear-gradient(180deg,#02040a 0%,rgba(2,4,10,0) 28%,rgba(2,4,10,0) 62%,#02040a 100%),linear-gradient(90deg,#02040a 0%,rgba(2,4,10,0) 16%,rgba(2,4,10,0) 84%,#02040a 100%);pointer-events:none"></div>
+    <div style="position:absolute;left:52px;right:52px;top:44px;display:flex;justify-content:space-between;align-items:flex-start;pointer-events:none">
+      <div style="display:flex;flex-direction:column;gap:4px">
+        <div style="font-size:20px;font-weight:500;letter-spacing:-.02em">Timo Hünnebeck</div>
+        <div style="font-size:13px;color:rgba(238,242,248,.6)">Senior Frontend Developer · Munich</div>
+      </div>
+      <div style="font-size:10.5px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:rgba(238,242,248,.55);padding-top:6px">Portfolio · 2026</div>
+    </div>
+    <div style="position:absolute;left:50%;top:500px;transform:translateX(-50%);width:440px;display:flex;flex-direction:column;align-items:center;gap:9px;text-align:center;pointer-events:none">
+      <div style="font-size:9.5px;font-weight:500;letter-spacing:.24em;text-transform:uppercase;color:rgba(238,242,248,.55)">{{ first.kind }}</div>
+      <div style="font-size:34px;font-weight:500;letter-spacing:-.03em;line-height:1;color:#fff">{{ first.title }}</div>
+      <div style="font-size:12px;line-height:1.45;color:rgba(238,242,248,.72);max-width:360px;text-wrap:pretty">{{ first.tagline }}</div>
+      <div style="margin-top:6px;background:#eef2f8;color:#02040a;padding:10px 18px;border-radius:999px;font-size:11px;font-weight:500;display:flex;gap:10px;align-items:center"><svg viewBox="0 0 12 12" style="width:9px;height:9px;display:block"><path d="M3.2 1.9c0-.9.9-1.4 1.6-1L10 4.9c.7.5.7 1.7 0 2.2L4.8 10.9c-.7.5-1.6 0-1.6-1z" fill="#02040a"></path></svg><span>Explore projects</span></div>
+      <div style="font-size:9.5px;letter-spacing:.04em;color:rgba(238,242,248,.5)">best on desktop · sound on</div>
+    </div>
+    <div style="position:absolute;left:52px;right:52px;top:740px;bottom:52px;display:flex;flex-direction:column;justify-content:space-between">
+      <div style="font-size:28px;font-weight:400;line-height:1.25;letter-spacing:-.02em;max-width:620px;text-wrap:pretty">Each project is a system you travel to and open. About three minutes.</div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px">
+        <sc-for list="{{ projects }}" as="p" hint-placeholder-count="4">
+          <a href="{{ p.href }}" style="display:flex;gap:8px;align-items:center;font-size:12px;padding:8px 14px;border-radius:999px;border:1px solid rgba(255,255,255,.14);color:#eef2f8" style-hover="background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.3);color:#fff"><span style="width:5px;height:5px;border-radius:50%;background: {{ p.tint }}"></span><span>{{ p.title }}</span></a>
+        </sc-for>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <a href="{{ url }}" style="font-size:30px;font-weight:500;letter-spacing:-.02em;line-height:1.1;color:#fff;border-bottom:1px dashed rgba(255,255,255,.35);padding-bottom:6px;align-self:flex-start;overflow-wrap:anywhere">{{ url }}</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="page" data-screen-label="2 Cover letter" style="position:relative;background:#02040a;color:#eef2f8;font-family:'Familjen Grotesk',Helvetica,sans-serif;font-size:12.5px;line-height:1.55;overflow:hidden;-webkit-font-smoothing:antialiased;padding:52px 56px 60px">
+    <div style="display:flex;justify-content:flex-end">
+      <div style="line-height:1.5;text-align:right">
+        <div style="font-weight:500;color:#fff">Timo Hünnebeck</div>
+        <div>Adamstr. 5</div>
+        <div>80636 Munich</div>
+        <div><a href="mailto:jantimohuennebeck@gmail.com" style="color:inherit">jantimohuennebeck@gmail.com</a></div>
+        <div><a href="tel:+4917686094246" style="color:inherit">+49 176 86094246</a></div>
+      </div>
+    </div>
+
+    <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:24px;margin-top:36px">
+      <div style="line-height:1.5"><div style="font-weight:500;color:#fff">Mercura</div><div>Sean Sdahl, CTO</div><div>Munich</div></div>
+      <div style="font-size:11.5px;color:rgba(238,242,248,.55);white-space:nowrap">Munich, 30 August 2026</div>
+    </div>
+
+    <div style="margin-top:26px">
+      <div style="font-size:10.5px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:rgba(238,242,248,.5);margin-bottom:8px">Application</div>
+      <div style="font-size:22px;font-weight:500;letter-spacing:-.02em;line-height:1.1;color:#fff">Design Engineer</div>
+    </div>
+
+    <div style="margin-top:20px;max-width:74ch;display:flex;flex-direction:column;gap:11px;color:rgba(238,242,248,.86)">
+      <p style="margin:0">Dear Sean,</p>
+      <p style="margin:0">I build interfaces that turn messy input into something a user can act on. At <strong style="font-weight:500;color:#fff">Horizon Alpha</strong> I have gone from trainee to Senior Frontend Developer in three years, building two product areas of <strong style="font-weight:500;color:#fff">phase6</strong> from the ground up for over a million users, and I have shipped two iOS apps of my own alongside that. Doing the same for technical requests and quotes is the same problem with far more on the line.</p>
+
+      <div style="margin:8px 0 6px;font-size:12px;line-height:1.45;display:flex;flex-direction:column;gap:2px">
+        <div style="display:grid;grid-template-columns:30px 33% 1fr;gap:0 16px;padding-bottom:6px;font-size:10px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:rgba(238,242,248,.5)"><span></span><span>Your requirements</span><span>My experience</span></div>
+        <div style="display:grid;grid-template-columns:30px 33% 1fr;gap:0 16px;padding:5px 0"><span style="width:20px;height:20px;border-radius:50%;background:#9fd3ff;color:#02040a;font-size:9.5px;font-weight:600;display:flex;align-items:center;justify-content:center;margin-top:-1px">1</span><span style="font-weight:500;color:#fff">Speaking directly to customers</span><span>Ran 8+ teacher interviews and built the Amplitude funnels that put numbers on phase6's biggest leaks – 75% drop-off in test creation, 18% sign-up rate – feeding redesigns with our UI/UX designer.</span></div>
+        <div style="display:grid;grid-template-columns:30px 33% 1fr;gap:0 16px;padding:5px 0"><span style="width:20px;height:20px;border-radius:50%;background:#9fd3ff;color:#02040a;font-size:9.5px;font-weight:600;display:flex;align-items:center;justify-content:center;margin-top:-1px">2</span><span style="font-weight:500;color:#fff">AI tools and Figma to prototype fast</span><span>Prototype daily with Claude Code; my running app Traqa generates multi-week training plans with an LLM from injury history, mileage and goals.</span></div>
+        <div style="display:grid;grid-template-columns:30px 33% 1fr;gap:0 16px;padding:5px 0"><span style="width:20px;height:20px;border-radius:50%;background:#9fd3ff;color:#02040a;font-size:9.5px;font-weight:600;display:flex;align-items:center;justify-content:center;margin-top:-1px">3</span><span style="font-weight:500;color:#fff">Shipping to production (React, TypeScript)</span><span>3 years of React, TypeScript and Next.js in production; built phase6's Teacher Area from scratch in Astro in four months – Lighthouse 96 performance, 96 accessibility.</span></div>
+        <div style="display:grid;grid-template-columns:30px 33% 1fr;gap:0 16px;padding:5px 0"><span style="width:20px;height:20px;border-radius:50%;background:#9fd3ff;color:#02040a;font-size:9.5px;font-weight:600;display:flex;align-items:center;justify-content:center;margin-top:-1px">4</span><span style="font-weight:500;color:#fff">Building something from the ground up</span><span>Built Unload solo end-to-end – 12,000 sign-ups, 4.6/5 from 50+ reviews, entirely self-funded.</span></div>
+      </div>
+
+      <p style="margin:0">From the outside, the hard problem in your product looks less like extraction than repair: when the model pulls hundreds of line items from a messy BOQ, correcting a wrong match has to be faster than typing it from scratch. Finding where users stall is exactly what I did at phase6.</p>
+      <p style="margin:0">I applied to YC myself with Traqa, so I know which side of the table I want to be on: a small team, a product I help shape rather than deliver to spec, customers I can talk to directly.</p>
+      <p style="margin:0">Notice period three months to the end of the month. I’d welcome the chance to talk through how you’re thinking about the quoting interface.</p>
+    </div>
+
+    <div style="margin-top:18px;color:rgba(238,242,248,.86)">
+      <div>Kind regards</div>
+      <div style="margin-top:30px;font-size:15px;font-weight:500;color:#fff">Timo Hünnebeck</div>
+    </div>
+    <div style="position:absolute;right:56px;bottom:26px;font-size:10px;letter-spacing:.12em;color:rgba(238,242,248,.4)">Timo Hünnebeck · Page 2 of 4</div>
+  </section>
+
+  <section class="page" data-screen-label="3 CV" style="position:relative;background:#02040a;color:#eef2f8;font-family:'Familjen Grotesk',Helvetica,sans-serif;font-size:12.5px;line-height:1.42;overflow:hidden;-webkit-font-smoothing:antialiased;padding:52px 56px 60px">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:32px">
+      <div>
+        <div style="font-size:38px;font-weight:500;letter-spacing:-.03em;line-height:1;color:#fff">Timo Hünnebeck</div>
+        <div style="font-size:14px;color:rgba(238,242,248,.66);margin-top:10px">Senior Frontend Developer · React, TypeScript, Next.js</div>
+        <div style="display:flex;flex-direction:column;gap:8px;margin-top:18px;font-size:11.5px;color:rgba(238,242,248,.66)">
+        <div style="display:flex;flex-wrap:wrap;gap:8px 18px">
+          <span style="display:flex;align-items:center;gap:6px"><svg viewBox="0 0 24 24" fill="none" stroke="rgba(238,242,248,.5)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px;flex:none"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path><circle cx="12" cy="10" r="3"></circle></svg><span>Munich</span></span>
+          <span style="display:flex;align-items:center;gap:6px"><svg viewBox="0 0 24 24" fill="none" stroke="rgba(238,242,248,.5)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px;flex:none"><rect x="2" y="4" width="20" height="16" rx="2"></rect><path d="m2 7 10 6 10-6"></path></svg><a href="mailto:jantimohuennebeck@gmail.com" style="color:inherit">jantimohuennebeck@gmail.com</a></span>
+          <span style="display:flex;align-items:center;gap:6px"><svg viewBox="0 0 24 24" fill="none" stroke="rgba(238,242,248,.5)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px;flex:none"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 2 .7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.2a2 2 0 0 1 2.1-.5c.9.3 1.9.6 2.8.7a2 2 0 0 1 1.7 2Z"></path></svg><a href="tel:+4917686094246" style="color:inherit">+49 176 86094246</a></span>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px 18px">
+          <span style="display:flex;align-items:center;gap:6px"><svg viewBox="0 0 24 24" fill="none" stroke="rgba(238,242,248,.5)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px;flex:none"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.1-1.3-.3-2.6-1-3.5.3-1.1.3-2.3 0-3.5 0 0-1 0-3 1.5-2.6-.5-5.4-.5-8 0C6 2 5 2 5 2c-.3 1.2-.3 2.4 0 3.5-.7.9-1.1 2.2-1 3.5 0 3.5 3 5.5 6 5.5-.4.4-.7.9-.8 1.4-.2.6-.3 1.2-.2 1.8v4"></path><path d="M9 18c-4.5 2-5-2-7-2"></path></svg><a href="https://github.com/timohuennebeck" style="color:inherit">github.com/timohuennebeck</a></span>
+          <span style="display:flex;align-items:center;gap:6px"><svg viewBox="0 0 24 24" fill="none" stroke="rgba(238,242,248,.5)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px;flex:none"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6Z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg><a href="https://www.linkedin.com/in/timo-huennebeck" style="color:inherit">linkedin.com/in/timo-huennebeck</a></span>
+        </div>
+        </div>
+      </div>
+      <img src="assets/portrait.jpg" alt="Timo Hünnebeck" style="flex:none;width:72px;height:72px;border-radius:50%;object-fit:cover;border:1px solid rgba(255,255,255,.22)">
+    </div>
+
+    <div style="margin-top:22px">
+      <div style="font-size:10.5px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:rgba(238,242,248,.5);margin-bottom:10px">Profile</div>
+      <div style="display:flex;flex-direction:column;gap:6px;max-width:640px;font-size:12.5px">
+        <div style="display:grid;grid-template-columns:10px 1fr;gap:8px"><span style="width:5px;height:5px;border-radius:50%;background:#9fd3ff;margin-top:8px"></span><span><strong style="font-weight:500;color:#fff">3 years</strong> of React, Next.js and Expo in production – from trainee to senior at Horizon Alpha, most recently building two product areas of phase6 (<strong style="font-weight:500;color:#fff">1 million</strong> users) from the ground up.</span></div>
+        <div style="display:grid;grid-template-columns:10px 1fr;gap:8px"><span style="width:5px;height:5px;border-radius:50%;background:#9fd3ff;margin-top:8px"></span><span>Decisions from data rather than gut feeling: self-built conversion funnels in Amplitude that put numbers on phase6's two biggest drop-off points.</span></div>
+        <div style="display:grid;grid-template-columns:10px 1fr;gap:8px"><span style="width:5px;height:5px;border-radius:50%;background:#9fd3ff;margin-top:8px"></span><span>Took two of my own iOS apps from idea to monetisation – the more successful one with over <strong style="font-weight:500;color:#fff">12,000</strong> sign-ups; before that, an Amazon business at <strong style="font-weight:500;color:#fff">$2,500</strong> a month.</span></div>
+      </div>
+    </div>
+
+    <div style="margin-top:26px">
+      <div style="font-size:10.5px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:rgba(238,242,248,.5);margin-bottom:10px">Experience</div>
+
+      <div style="display:grid;grid-template-columns:124px 26px 1fr">
+        <div style="font-size:11px;text-align:right;line-height:1.3;padding-top:3px;font-variant-numeric:tabular-nums">04/2023 – <span style="color:#9fd3ff">present</span><span style="display:block;margin-top:4px;font-size:10px;color:rgba(238,242,248,.5)">3 years 5 months</span></div>
+        <div style="position:relative"><span style="position:absolute;left:9px;top:6px;width:5px;height:5px;border-radius:50%;background:#9fd3ff;border:1px solid #9fd3ff;box-shadow:0 0 0 4px rgba(159,211,255,.18)"></span></div>
+        <div style="padding-bottom:12px">
+          <div style="font-size:14px;font-weight:500;line-height:1.35;letter-spacing:-.01em;color:#fff">Senior Frontend Developer</div>
+          <div style="font-size:12px;color:rgba(238,242,248,.6);margin-top:2px">Horizon Alpha · Munich</div>
+          <div style="display:flex;flex-direction:column;gap:0;margin-top:6px;font-size:11.5px;line-height:1.4;color:rgba(238,242,248,.6)">
+            <div style="display:grid;grid-template-columns:52px 1fr;gap:12px;color:#eef2f8"><span style="font-size:11px;text-align:right;font-variant-numeric:tabular-nums">08/2026</span><span style="font-weight:500">Senior Frontend Developer</span></div>
+            <div style="display:grid;grid-template-columns:52px 1fr;gap:12px"><span style="font-size:11px;text-align:right;font-variant-numeric:tabular-nums">01/2025</span><span>Intermediate Frontend Developer</span></div>
+            <div style="display:grid;grid-template-columns:52px 1fr;gap:12px"><span style="font-size:11px;text-align:right;font-variant-numeric:tabular-nums">09/2023</span><span>Associate Frontend Developer</span></div>
+            <div style="display:grid;grid-template-columns:52px 1fr;gap:12px"><span style="font-size:11px;text-align:right;font-variant-numeric:tabular-nums">04/2023</span><span>Trainee</span></div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:3px;margin-top:8px;color:rgba(238,242,248,.8)">
+            <div style="display:grid;grid-template-columns:10px 1fr;gap:6px"><span style="width:4px;height:4px;border-radius:50%;background:#9fd3ff;margin-top:8px"></span><span>Built Enhanced Classes as a team of two in <strong style="font-weight:500;color:#fff">5 months</strong> – teachers manage classes and assign tests directly instead of sending every pupil an individual link. Biggest release of the year.</span></div>
+            <div style="display:grid;grid-template-columns:10px 1fr;gap:6px"><span style="width:4px;height:4px;border-radius:50%;background:#9fd3ff;margin-top:8px"></span><span>Built the Teacher Area (<a href="https://www.phase-6.de/schule" style="border-bottom:1px dashed rgba(159,211,255,.45)">phase-6.de/schule</a>) from scratch in Astro in <strong style="font-weight:500;color:#fff">4 months</strong> – Lighthouse <strong style="font-weight:500;color:#fff">96</strong> for performance and <strong style="font-weight:500;color:#fff">96</strong> for accessibility (screen-reader support under the German Accessibility Act), <strong style="font-weight:500;color:#fff">100</strong> each for best practices and SEO.</span></div>
+            <div style="display:grid;grid-template-columns:10px 1fr;gap:6px"><span style="width:4px;height:4px;border-radius:50%;background:#9fd3ff;margin-top:8px"></span><span>Demonstrated a <strong style="font-weight:500;color:#fff">75%</strong> drop-off in test creation and only <strong style="font-weight:500;color:#fff">18%</strong> sign-ups – self-built Amplitude funnels for phase6 (<strong style="font-weight:500;color:#fff">1 million</strong> users), redesigns together with the UI/UX designer.</span></div>
+            <div style="display:grid;grid-template-columns:10px 1fr;gap:6px"><span style="width:4px;height:4px;border-radius:50%;background:#9fd3ff;margin-top:8px"></span><span>Code reviews, database design and over <strong style="font-weight:500;color:#fff">8</strong> user interviews with teachers; introduced E2E tests in the GitLab pipeline and Sentry.</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:26px">
+      <div style="font-size:10.5px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:rgba(238,242,248,.5);margin-bottom:10px">Independent projects</div>
+      <div style="display:grid;grid-template-columns:124px 26px 1fr">
+        <div style="font-size:11px;text-align:right;line-height:1.3;padding-top:3px;font-variant-numeric:tabular-nums">02/2025 – 10/2025<span style="display:block;margin-top:4px;font-size:10px;color:rgba(238,242,248,.5)">9 months</span></div>
+        <div style="position:relative"><span style="position:absolute;left:12px;top:9px;bottom:0;border-left:1px solid rgba(255,255,255,.14)"></span><span style="position:absolute;left:9px;top:6px;width:5px;height:5px;border-radius:50%;border:1px solid rgba(255,255,255,.5);background:#02040a"></span></div>
+        <div style="padding-bottom:12px">
+          <div style="font-size:14px;font-weight:500;line-height:1.35;letter-spacing:-.01em;color:#fff">Traqa (iOS)</div>
+          <div style="font-size:12px;color:rgba(238,242,248,.6);margin-top:2px">Running app with training planning · Expo (React Native)</div>
+          <a href="https://github.com/timohuennebeck/running-app" style="display:inline-flex;align-items:center;gap:6px;margin-top:5px;font-size:11.5px;color:rgba(238,242,248,.66)"><svg viewBox="0 0 24 24" fill="none" stroke="rgba(238,242,248,.5)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:11px;height:11px;flex:none"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.1-1.3-.3-2.6-1-3.5.3-1.1.3-2.3 0-3.5 0 0-1 0-3 1.5-2.6-.5-5.4-.5-8 0C6 2 5 2 5 2c-.3 1.2-.3 2.4 0 3.5-.7.9-1.1 2.2-1 3.5 0 3.5 3 5.5 6 5.5-.4.4-.7.9-.8 1.4-.2.6-.3 1.2-.2 1.8v4"></path><path d="M9 18c-4.5 2-5-2-7-2"></path></svg><span style="border-bottom:1px dashed rgba(238,242,248,.3)">github.com/timohuennebeck/running-app</span></a>
+          <div style="display:flex;flex-direction:column;gap:3px;margin-top:6px;color:rgba(238,242,248,.8)">
+            <div style="display:grid;grid-template-columns:10px 1fr;gap:6px"><span style="width:4px;height:4px;border-radius:50%;background:#9fd3ff;margin-top:8px"></span><span>Multi-week training plans generated by an LLM from the onboarding – injury history, weekly mileage, goals, terrain and available training days.</span></div>
+            <div style="display:grid;grid-template-columns:10px 1fr;gap:6px"><span style="width:4px;height:4px;border-radius:50%;background:#9fd3ff;margin-top:8px"></span><span>Offline-first with background GPS, retroactive import and map integration.</span></div>
+          </div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:124px 26px 1fr">
+        <div style="font-size:11px;text-align:right;line-height:1.3;padding-top:3px;font-variant-numeric:tabular-nums">03/2023 – 10/2024<span style="display:block;margin-top:4px;font-size:10px;color:rgba(238,242,248,.5)">1 year 8 months</span></div>
+        <div style="position:relative"><span style="position:absolute;left:12px;top:0;bottom:calc(100% - 6px);border-left:1px solid rgba(255,255,255,.14)"></span><span style="position:absolute;left:9px;top:6px;width:5px;height:5px;border-radius:50%;border:1px solid rgba(255,255,255,.5);background:#02040a"></span></div>
+        <div style="padding-bottom:4px">
+          <div style="font-size:14px;font-weight:500;line-height:1.35;letter-spacing:-.01em;color:#fff">Unload (iOS)</div>
+          <div style="font-size:12px;color:rgba(238,242,248,.6);margin-top:2px">Habit-change app · Expo (React Native)</div>
+          <a href="https://github.com/timohuennebeck/unload-mobile-app" style="display:inline-flex;align-items:center;gap:6px;margin-top:5px;font-size:11.5px;color:rgba(238,242,248,.66)"><svg viewBox="0 0 24 24" fill="none" stroke="rgba(238,242,248,.5)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:11px;height:11px;flex:none"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.1-1.3-.3-2.6-1-3.5.3-1.1.3-2.3 0-3.5 0 0-1 0-3 1.5-2.6-.5-5.4-.5-8 0C6 2 5 2 5 2c-.3 1.2-.3 2.4 0 3.5-.7.9-1.1 2.2-1 3.5 0 3.5 3 5.5 6 5.5-.4.4-.7.9-.8 1.4-.2.6-.3 1.2-.2 1.8v4"></path><path d="M9 18c-4.5 2-5-2-7-2"></path></svg><span style="border-bottom:1px dashed rgba(238,242,248,.3)">github.com/timohuennebeck/unload-mobile-app</span></a>
+          <div style="display:flex;flex-direction:column;gap:3px;margin-top:6px;color:rgba(238,242,248,.8)">
+            <div style="display:grid;grid-template-columns:10px 1fr;gap:6px"><span style="width:4px;height:4px;border-radius:50%;background:#9fd3ff;margin-top:8px"></span><span>Over <strong style="font-weight:500;color:#fff">12,000</strong> sign-ups, around <strong style="font-weight:500;color:#fff">800</strong> active users and up to <strong style="font-weight:500;color:#fff">€280</strong> in monthly revenue – <strong style="font-weight:500;color:#fff">4.6</strong> out of 5 stars from over <strong style="font-weight:500;color:#fff">50</strong> reviews.</span></div>
+            <div style="display:grid;grid-template-columns:10px 1fr;gap:6px"><span style="width:4px;height:4px;border-radius:50%;background:#9fd3ff;margin-top:8px"></span><span>Queue-based matching automatically places users into fixed groups of 2–4 people with real-time chat.</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="position:absolute;right:56px;bottom:26px;font-size:10px;letter-spacing:.12em;color:rgba(238,242,248,.4)">Timo Hünnebeck · Page 3 of 4</div>
+  </section>
+
+  <section class="page" data-screen-label="4 CV" style="position:relative;background:#02040a;color:#eef2f8;font-family:'Familjen Grotesk',Helvetica,sans-serif;font-size:12.5px;line-height:1.5;overflow:hidden;-webkit-font-smoothing:antialiased;padding:52px 56px 60px">
+    <div>
+      <div style="font-size:10.5px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:rgba(238,242,248,.5);margin-bottom:14px">Earlier experience</div>
+      <div style="display:grid;grid-template-columns:124px 26px 1fr">
+        <div style="font-size:11px;text-align:right;line-height:1.3;padding-top:3px;font-variant-numeric:tabular-nums">11/2021 – 08/2022<span style="display:block;margin-top:4px;font-size:10px;color:rgba(238,242,248,.5)">10 months</span></div>
+        <div style="position:relative"><span style="position:absolute;left:12px;top:9px;bottom:0;border-left:1px solid rgba(255,255,255,.14)"></span><span style="position:absolute;left:9px;top:6px;width:5px;height:5px;border-radius:50%;border:1px solid rgba(255,255,255,.5);background:#02040a"></span></div>
+        <div style="padding-bottom:16px">
+          <div style="font-size:14px;font-weight:500;line-height:1.35;letter-spacing:-.01em;color:#fff">Facebook and Instagram Marketing (self-employed)</div>
+          <div style="font-size:12px;color:rgba(238,242,248,.6);margin-top:2px">Bloom · Remote (Medellín, Colombia) · Meta ad campaigns, Google Ads and cold outreach</div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:124px 26px 1fr">
+        <div style="font-size:11px;text-align:right;line-height:1.3;padding-top:3px;font-variant-numeric:tabular-nums">06/2020 – 11/2021<span style="display:block;margin-top:4px;font-size:10px;color:rgba(238,242,248,.5)">1 year 6 months</span></div>
+        <div style="position:relative"><span style="position:absolute;left:12px;top:0;bottom:0;border-left:1px solid rgba(255,255,255,.14)"></span><span style="position:absolute;left:9px;top:6px;width:5px;height:5px;border-radius:50%;border:1px solid rgba(255,255,255,.5);background:#02040a"></span></div>
+        <div style="padding-bottom:16px">
+          <div style="font-size:14px;font-weight:500;line-height:1.35;letter-spacing:-.01em;color:#fff">Amazon FBA Seller (self-employed)</div>
+          <div style="font-size:12px;color:rgba(238,242,248,.6);margin-top:2px">Amazon Marketplace · Remote (Mérida, Mexico) · Product import from Shenzhen, launch on the US market</div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:124px 26px 1fr">
+        <div style="font-size:11px;text-align:right;line-height:1.3;padding-top:3px;font-variant-numeric:tabular-nums">06/2019 – 09/2019<span style="display:block;margin-top:4px;font-size:10px;color:rgba(238,242,248,.5)">4 months</span></div>
+        <div style="position:relative"><span style="position:absolute;left:12px;top:0;bottom:0;border-left:1px solid rgba(255,255,255,.14)"></span><span style="position:absolute;left:9px;top:6px;width:5px;height:5px;border-radius:50%;border:1px solid rgba(255,255,255,.5);background:#02040a"></span></div>
+        <div style="padding-bottom:16px">
+          <div style="font-size:14px;font-weight:500;line-height:1.35;letter-spacing:-.01em;color:#fff">Human Resources Intern</div>
+          <div style="font-size:12px;color:rgba(238,242,248,.6);margin-top:2px">Palmer Hargreaves · Cologne · Part-time · Talent acquisition and recruiting</div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:124px 26px 1fr">
+        <div style="font-size:11px;text-align:right;line-height:1.3;padding-top:3px;font-variant-numeric:tabular-nums">10/2018 – 04/2019<span style="display:block;margin-top:4px;font-size:10px;color:rgba(238,242,248,.5)">7 months</span></div>
+        <div style="position:relative"><span style="position:absolute;left:12px;top:0;bottom:calc(100% - 6px);border-left:1px solid rgba(255,255,255,.14)"></span><span style="position:absolute;left:9px;top:6px;width:5px;height:5px;border-radius:50%;border:1px solid rgba(255,255,255,.5);background:#02040a"></span></div>
+        <div style="padding-bottom:4px">
+          <div style="font-size:14px;font-weight:500;line-height:1.35;letter-spacing:-.01em;color:#fff">Human Resources Intern</div>
+          <div style="font-size:12px;color:rgba(238,242,248,.6);margin-top:2px">UPM · Kraków, Poland · Contract administration and employee enquiries</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:34px">
+      <div style="font-size:10.5px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:rgba(238,242,248,.5);margin-bottom:14px">Education</div>
+      <div style="display:grid;grid-template-columns:124px 26px 1fr">
+        <div style="font-size:11px;text-align:right;line-height:1.3;padding-top:3px;font-variant-numeric:tabular-nums">08/2022 – 11/2022<span style="display:block;margin-top:4px;font-size:10px;color:rgba(238,242,248,.5)">4 months</span></div>
+        <div style="position:relative"><span style="position:absolute;left:12px;top:9px;bottom:0;border-left:1px solid rgba(255,255,255,.14)"></span><span style="position:absolute;left:9px;top:6px;width:5px;height:5px;border-radius:50%;border:1px solid rgba(255,255,255,.5);background:#02040a"></span></div>
+        <div style="padding-bottom:16px">
+          <div style="font-size:14px;font-weight:500;line-height:1.35;letter-spacing:-.01em;color:#fff">Diploma, Web Development</div>
+          <div style="font-size:12px;color:rgba(238,242,248,.6);margin-top:2px">BrainStation · Remote (Toronto, Canada) · Final grade <strong style="font-weight:500;color:#eef2f8">91.8%</strong></div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:124px 26px 1fr">
+        <div style="font-size:11px;text-align:right;line-height:1.3;padding-top:3px;font-variant-numeric:tabular-nums">09/2019 – 06/2021<span style="display:block;margin-top:4px;font-size:10px;color:rgba(238,242,248,.5)">1 year 10 months</span></div>
+        <div style="position:relative"><span style="position:absolute;left:12px;top:0;bottom:calc(100% - 6px);border-left:1px solid rgba(255,255,255,.14)"></span><span style="position:absolute;left:9px;top:6px;width:5px;height:5px;border-radius:50%;border:1px solid rgba(255,255,255,.5);background:#02040a"></span></div>
+        <div style="padding-bottom:4px">
+          <div style="font-size:14px;font-weight:500;line-height:1.35;letter-spacing:-.01em;color:#fff">International Business BA (Hons)</div>
+          <div style="font-size:12px;color:rgba(238,242,248,.6);margin-top:2px">University of Liverpool · England · not completed</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:34px">
+      <div style="font-size:10.5px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:rgba(238,242,248,.5);margin-bottom:16px">Skills</div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px 26px;font-size:12px;line-height:1.5;color:rgba(238,242,248,.8)">
+        <div><div style="font-size:10px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:#9fd3ff;margin-bottom:6px">Frontend</div>TypeScript, React, React Native (Expo), Next.js, Astro, Tailwind CSS</div>
+        <div><div style="font-size:10px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:#9fd3ff;margin-bottom:6px">Backend</div>Node.js, PostgreSQL, Supabase, AWS, Firebase, Docker</div>
+        <div><div style="font-size:10px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:#9fd3ff;margin-bottom:6px">Tools and workflow</div>Git, GitLab CI, Cypress, Sentry, Amplitude, Claude Code</div>
+        <div><div style="font-size:10px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:#9fd3ff;margin-bottom:6px">Interests</div>Road cycling, motorcycle touring, boxing, running</div>
+        <div><div style="font-size:10px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:#9fd3ff;margin-bottom:6px">Languages</div>German (native), English (C1), Spanish (B1)</div>
+        <div><div style="font-size:10px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:#9fd3ff;margin-bottom:6px">Certificates</div>AWS Cloud Practitioner · Amazon Web Services · 10/2023</div>
+      </div>
+    </div>
+    <div style="position:absolute;right:56px;bottom:26px;font-size:10px;letter-spacing:.12em;color:rgba(238,242,248,.4)">Timo Hünnebeck · Page 4 of 4</div>
+  </section>
+</doc-page>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;url&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;https://timohuennebeck.com&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Link&quot;}}">
+const DEFAULT_URL = 'https://timohuennebeck.com';
+class Component extends DCLogic {
+  state = { projects: [] };
+  renderVals() { const url = this.props.url ?? DEFAULT_URL; return { url, first: this.state.projects[0] || {}, projects: this.state.projects.map(p => ({ ...p, href: url.replace(/\/$/, '') + '#' + p.id })) }; }
+  async componentDidMount() {
+    const dp = document.querySelector('doc-page'), measure = () => { if (dp && dp._measure) dp._measure(); };
+    const { PROJECTS } = await import('./content.js'); this.setState({ projects: PROJECTS });
+    requestAnimationFrame(measure);
+    // Explicit A4 pages clip at print: warn when content would be cut off.
+    const check = () => document.querySelectorAll('doc-page > .page').forEach((p, i) => { const over = p.scrollHeight - p.clientHeight; if (over > 2) console.warn('Page ' + (i + 1) + ' overflows by ' + over + 'px'); });
+    (document.fonts ? document.fonts.ready : Promise.resolve()).then(() => setTimeout(() => { measure(); check(); }, 500));
+  }
+}
+</script>
+</body>
+</html>
