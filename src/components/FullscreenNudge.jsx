@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { fullscreenSupported, isFullscreen, requestFullscreen, onFullscreenChange } from '../fullscreen.js';
 
 /** Let the stage land unobscured for a beat before the nudge slides in. */
-const APPEAR_AFTER_MS = 1800;
+const APPEAR_AFTER_MS = 800;
 /** How long the nudge stays up, once visible, before it quietly leaves. */
 const AUTO_DISMISS_MS = 12000;
 
@@ -11,8 +11,9 @@ const AUTO_DISMISS_MS = 12000;
  *
  * The stage shows clean for a beat, then the pill slides up into the top
  * center over a lightly blurred stage so it reads as a moment, not a banner.
- * It leaves after twelve seconds, on the close button, on the fullscreen
- * button, or as soon as the document goes fullscreen by any route. Desktop
+ * While it is up the stage underneath takes no clicks. It leaves after
+ * twelve seconds, on the close button, on the fullscreen button, on a click
+ * anywhere else, or as soon as the document goes fullscreen by any route. Desktop
  * only: the parent does not mount it on the mobile layout, and browsers that
  * cannot go fullscreen at all (iPhone Safari) never see it either.
  */
@@ -47,10 +48,14 @@ export default function FullscreenNudge({ t, hidden }) {
 
   return (
     <>
+      {/* Catches every click while the nudge is up so nothing behind it can be
+          hit by accident; a click on it simply lets the visitor move on. */}
       <div
         aria-hidden="true"
+        onClick={close}
         style={{
-          ...fade, position: 'absolute', inset: 0, zIndex: 3, pointerEvents: 'none',
+          ...fade, position: 'absolute', inset: 0, zIndex: 3,
+          pointerEvents: shown ? 'auto' : 'none',
           background: 'rgba(2,4,10,.28)',
           backdropFilter: 'blur(4px)', WebkitBackdropFilter: 'blur(4px)',
         }}
