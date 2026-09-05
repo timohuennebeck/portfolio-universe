@@ -15,12 +15,13 @@ const glass = {
   transition: 'opacity .5s, background .3s',
 };
 
-const INTRO_MS = 12000;
+const INTRO_MS = 8000;
 
 /** Interaction hints. Mobile: the touch line, always. Desktop: a bare "i"
-    top-right with the Scroll / Drag / Enter row to its left. The row shows
-    by itself for the first twelve seconds after arrival (or until a page
-    opens), then folds into the icon — hover only after that. */
+    top-right (a keyboard glyph) with the Scroll / Drag / Enter row to its
+    left. The row shows by itself for the first eight seconds after arrival
+    (or until a page opens, or the icon is hovered), then folds into the
+    icon — hover only after that. */
 export function Hints({ ui, t, opacity }) {
   const [intro, setIntro] = React.useState(true);
   const [hover, setHover] = React.useState(false);
@@ -44,7 +45,8 @@ export function Hints({ ui, t, opacity }) {
   }
   return (
     <div
-      onMouseEnter={() => setHover(true)}
+      // during the intro a hover folds the row instead of opening it
+      onMouseEnter={() => (intro ? setIntro(false) : setHover(true))}
       onMouseLeave={() => setHover(false)}
       style={{
         position: 'absolute', right: ui.edge, top: ui.hudTop, zIndex: 2,
@@ -76,7 +78,7 @@ export function Hints({ ui, t, opacity }) {
         }}
       >
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-          <circle cx="12" cy="12" r="10" /><path d="M12 16v-4" /><path d="M12 8h.01" />
+          <rect x="2" y="6" width="20" height="12" rx="2" /><path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M8 14h8" />
         </svg>
       </button>
     </div>
