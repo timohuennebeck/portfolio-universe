@@ -69,8 +69,10 @@ export function NavDock({ ui, nodes, idx, onGo, opacity, pointerEvents }) {
                 justifyContent: 'center', transition: 'background .35s, color .35s', height: 34,
               }}
             >
+              {/* 1px down: flex centres the dot on the line box, whose middle sits
+                  about 1px above the visual centre of 13px text */}
               <span style={{
-                width: 6, height: 6, borderRadius: '50%', background: n.tint,
+                width: 6, height: 6, borderRadius: '50%', background: n.tint, position: 'relative', top: 1,
                 boxShadow: `0 0 8px ${n.tint}`, opacity: active ? 1 : 0.35,
               }} />
               {showTitle && (
@@ -123,7 +125,7 @@ export function SoundButton({ ui, on, label, onClick, opacity, pointerEvents }) 
       }}
     >
       <span style={{
-        width: 6, height: 6, borderRadius: '50%', background: dot,
+        width: 6, height: 6, borderRadius: '50%', background: dot, position: 'relative', top: 1,
         boxShadow: `0 0 8px ${dot}`, transition: 'background .3s',
       }} />
       <span>{label}</span>
