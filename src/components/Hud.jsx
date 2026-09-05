@@ -58,7 +58,7 @@ export function Identity({ ui, about, onClick, opacity, pointerEvents }) {
         border: '1px solid rgba(255,255,255,.18)',
       }} />
       <span className="gp-identity-name" style={{
-        color: '#eef2f8', borderBottom: '1px dashed #eef2f8', paddingBottom: 1,
+        color: '#eef2f8', borderBottom: '1px dashed rgba(238,242,248,.7)', paddingBottom: 1,
         transition: 'border-color .3s',
       }}>{about.name}</span>
       <span>{about.role} · {about.location}</span>
