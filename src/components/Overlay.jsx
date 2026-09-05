@@ -262,23 +262,24 @@ function RatingCard({ s, tint, ui }) {
           </div>
         )}
       </div>
-      {s.quote && typeof s.quote === 'object' && (
-        // one voice to go with the number — part of the same section, so a
-        // page never carries two separate "people like it" blocks
-        <div style={{ display: 'grid', gridTemplateColumns: '40px 1fr', gap: 18, alignItems: 'start', paddingTop: 8, maxWidth: 720 }}>
-          <svg aria-hidden="true" width="34" height="26" viewBox="0 0 96 72" style={{ display: 'block', marginTop: 4, filter: `drop-shadow(0 0 12px ${tint}59)` }}>
-            <path fill={tint} d="M22 72C9 72 0 62 0 48 0 26 14 8 38 0l6 10C30 16 22 26 20 36c1 0 3-1 5-1 12 0 20 8 20 19 0 10-9 18-23 18zm52 0c-13 0-22-10-22-24C52 26 66 8 90 0l6 10c-14 6-22 16-24 26 1 0 3-1 5-1 12 0 20 8 20 19 0 10-9 18-23 18z" />
-          </svg>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-            <div style={{ fontSize: ui.desktop ? 22 : 19, fontWeight: 500, letterSpacing: '-.01em', lineHeight: 1.35, textWrap: 'pretty' }}>{s.quote.line}</div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 14, flexWrap: 'wrap' }}>
-              <Stars value={s.quote.stars} tint={tint} size={14} />
-              {s.quote.source && <span style={{ fontSize: 13, color: 'rgba(238,242,248,.55)' }}>{s.quote.source}</span>}
-            </div>
-          </div>
-        </div>
-      )}
     </ChartCard>
+  );
+}
+
+/** One App Store review, pulled out and centred — the one block on the page
+    that isn't left-aligned, so it breaks the rhythm on purpose: the tint
+    quotation mark, the line, the stars, and where it's from. Lives at the
+    end of the story, well away from the rating block. */
+function QuoteCard({ s, tint, ui }) {
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', gap: 20, padding: '14px 0' }}>
+      <svg aria-hidden="true" width="48" height="36" viewBox="0 0 96 72" style={{ display: 'block', filter: `drop-shadow(0 0 12px ${tint}59)` }}>
+        <path fill={tint} d="M22 72C9 72 0 62 0 48 0 26 14 8 38 0l6 10C30 16 22 26 20 36c1 0 3-1 5-1 12 0 20 8 20 19 0 10-9 18-23 18zm52 0c-13 0-22-10-22-24C52 26 66 8 90 0l6 10c-14 6-22 16-24 26 1 0 3-1 5-1 12 0 20 8 20 19 0 10-9 18-23 18z" />
+      </svg>
+      <div style={{ fontSize: ui.desktop ? 28 : 22, fontWeight: 500, letterSpacing: '-.015em', lineHeight: 1.35, maxWidth: 720, textWrap: 'balance' }}>{s.line}</div>
+      <Stars value={s.stars} tint={tint} size={18} />
+      {s.source && <div style={{ fontSize: 14, color: 'rgba(238,242,248,.62)', marginTop: -6 }}>{s.source}</div>}
+    </div>
   );
 }
 
@@ -298,9 +299,14 @@ function FunnelColumns({ steps, tint, ui, independent = false }) {
           const prev = independent || i === 0 ? 100 : steps[i - 1].pct, last = i === steps.length - 1;
           return (
             <div key={i} style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', gap: 6, height: `${prev}%`, justifyContent: 'flex-end' }}>
-              {prev > st.pct && <div style={{ flex: `0 0 calc(${(prev - st.pct) / prev * 100}% - 6px)`, borderRadius: 8, background: HATCH }} />}
+              {/* the hatch takes whatever the solid bar leaves, so the column's
+                  total height is always the previous step — even when a tiny
+                  share is held at the minimum height its label needs */}
+              {prev > st.pct && <div style={{ flex: '1 1 0', minHeight: 0, borderRadius: 8, background: HATCH }} />}
               <div style={{
-                flex: `0 0 calc(${st.pct / prev * 100}%)`, minHeight: 56, borderRadius: 8, padding: '18px 4px 0', textAlign: 'center',
+                // symmetric padding: a bar too short for its share stops at the label
+                // plus equal room above and below, never at the label touching the edge
+                flex: `0 0 calc(${st.pct / prev * 100}%)`, borderRadius: 8, padding: '18px 4px', textAlign: 'center',
                 background: last ? tint : 'rgba(255,255,255,.07)', boxShadow: last ? `0 0 28px ${tint}66` : 'none',
                 color: last ? '#02040a' : '#eef2f8', transition: 'flex-basis .4s',
               }}>
@@ -492,6 +498,7 @@ function ProjectPage({ ui, t, project, nextTitle, onClose, onNext }) {
           {s.numbers === true && <NumbersCard s={s} ui={ui} />}
           {s.funnel === true && <FunnelCard s={s} tint={project.tint} ui={ui} />}
           {s.rating === true && <RatingCard s={s} tint={project.tint} ui={ui} />}
+          {s.quote === true && <QuoteCard s={s} tint={project.tint} ui={ui} />}
           {s.waffle === true && <WaffleCard s={s} ui={ui} />}
         </div>
       ))}
