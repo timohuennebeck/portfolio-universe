@@ -135,6 +135,10 @@ export const PROJECTS = [
 
 export const ABOUT = {
   name: 'Timo Hünnebeck',
+  role: 'Senior Frontend Developer',
+  location: 'Munich',
+  github: 'https://github.com/timohuennebeck',
+  cv: 'Timo-Huennebeck-CV.pdf', // served from public/, resolved against the site's base path
   intro: 'Frontend developer in Munich — three years of React, Next.js and Expo at Horizon Alpha, trainee to senior, lately on Phase6 and its million users. I came from marketing, so I would rather read a funnel than argue about a screen.',
   detail: 'Two iOS apps of my own, one of them to 12,000 sign-ups. In the space view, the galaxies are client work; the black hole and the sun are mine.',
   email: 'jantimohuennebeck@gmail.com',
