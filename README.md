@@ -1,25 +1,113 @@
-# CODING AGENTS: READ THIS FIRST
+# Galaxy Portfolio
 
-This is a **handoff bundle** from Claude Design (claude.ai/design).
+An interactive 3D portfolio. Each project is a destination in space — a particle
+galaxy, a black hole or a sun — and you warp between them along a curved flight
+path. Opening a destination fades a reading page in over the scene.
 
-A user mocked up designs in HTML/CSS/JS using an AI design tool, then exported this bundle so a coding agent can implement the designs for real.
+Built with Vite + React and a hand-written three.js renderer (instanced bokeh
+stars, a baked procedural sky, two-scale bloom and a gravitational-lens
+composite). There is no scene graph library and no post-processing library.
 
-## What you should do — IMPORTANT
+## Running it
 
-**Read the chat transcripts first.** There are 3 chat transcript(s) in `chats/`. The transcripts show the full back-and-forth between the user and the design assistant — they tell you **what the user actually wants** and **where they landed** after iterating. Don't skip them. The final HTML files are the output, but the chat is where the intent lives.
+```sh
+npm install
+npm run dev      # http://localhost:5173
+npm run build    # -> dist/
+npm run preview  # serve the production build
+```
 
-**Read `project/Galaxy Portfolio.dc.html` in full.** The user had this file open when they triggered the handoff, so it's almost certainly the primary design they want built. Read it top to bottom — don't skim. Then **follow its imports**: open every file it pulls in (shared components, CSS, scripts) so you understand how the pieces fit together before you start implementing.
+Requires a browser with WebGL. `npm run build` warns that the three.js chunk is
+over 500 kB — that is three.js itself, already split into its own chunk, and is
+expected.
 
-**If anything is ambiguous, ask the user to confirm before you start implementing.** It's much cheaper to clarify scope up front than to build the wrong thing.
+## Where things live
 
-## About the design files
+```
+index.html                 Fonts, favicon, mount point
+src/
+  main.jsx                 Entry point
+  index.css                Global resets, the gpRise keyframe, hover states
+  config.js                Scene knobs: ambience voice, quality, bloom
+  content.js               All copy. Edit this to change the portfolio.
+  layout.js                The two layout tables (mobile / desktop)
+  GalaxyPortfolio.jsx      Stateful shell: renderer, camera, warps, input, frame loop
+  components/
+    Hud.jsx                Hints, nav dock, About and Sound buttons
+    ArrivalCard.jsx        The label under the destination you have arrived at
+    Overlay.jsx            The reading surface: About page and project pages
+  space/
+    scene.js               Sky, star field, one object per destination, hover, culling
+    shaders.js             All GLSL
+    shapes.js              Galaxy shape generators (spiral, barred, ring, …)
+    post.js                Bloom and the composite pass
+  audio/ambience.js        Generative Web Audio ambience
+design/                    The Claude Design handoff this was built from
+```
 
-The design medium is **HTML/CSS/JS** — these are prototypes, not production code. Your job is to **recreate them pixel-perfectly** in whatever technology makes sense for the target codebase (React, Vue, native, whatever fits). Match the visual output; don't copy the prototype's internal structure unless it happens to fit.
+## Editing the portfolio
 
-**Don't render these files in a browser or take screenshots unless the user asks you to.** Everything you need — dimensions, colors, layout rules — is spelled out in the source. Read the HTML and CSS directly; a screenshot won't tell you anything they don't.
+Everything a non-developer needs is in `src/content.js`.
 
-## Bundle contents
+**Projects** — `PROJECTS` is an ordered array; the order is the flight route and
+the order of the pills in the bottom dock. Per entry:
 
-- `README.md` — this file
-- `chats/` — conversation transcripts (read these!)
-- `project/` — the `Interactive 3D portfolio galaxy` project files (HTML prototypes, assets, components)
+| field | meaning |
+| --- | --- |
+| `id` | URL fragment, so `/#traqa` deep-links to that destination |
+| `kind`, `title`, `tagline` | shown on the arrival card and the project page |
+| `meta` | the mono line under the title, joined with `·` (year · role · team · duration) |
+| `stack` | chips under the tagline |
+| `github` | optional; the "View on GitHub" pill disappears when absent |
+| `media` | caption of the hero slot |
+| `sections` | body of the page — see below |
+| `tint` | accent colour for the nav dot and the galaxy's core glow |
+| `star` / `blackhole` | render this destination as a sun or a black hole instead of a particle galaxy |
+| `offset` | nudge from the computed route position, so a destination does not sit behind the previous one |
+
+A galaxy's shape is not configured — it is assigned by position in the array,
+cycling through `SHAPE_ORDER` in `src/space/shapes.js`.
+
+`sections` entries take one of three shapes, and may be mixed and repeated:
+
+```js
+{ text: true, body: '…' }                                  // a paragraph
+{ stats: true, items: [{ meta, title, text }, …] }          // the card row
+{ label: 'Stack', chips: true, items: [{ title }, …] }      // a labelled chip row
+```
+
+**About** — `ABOUT` holds the name, the two paragraphs, the contact links and
+the toolkit chips. The portrait is `src/assets/portrait.jpg`.
+
+**Scene knobs** — `src/config.js`: `AMBIENCE` (`drone`, `wind`, `pulsar`,
+`choir`), `QUALITY` (`balanced` or `high` — particle counts and pixel-ratio cap)
+and `BLOOM`.
+
+## Notes for whoever picks this up
+
+- **Placeholder content.** Projects 04–06 are unwritten. They are also the two
+  most distinctive destinations — 05 is the black hole, 06 the sun — so replace
+  the copy rather than deleting the entries, or move the `blackhole` / `star`
+  flags onto projects you keep. The `github` URLs on all six are placeholders,
+  and the hero slots are empty by design, awaiting real art.
+- **Sound is off on touch devices** and has no toggle there; on desktop it
+  starts on and begins at the first interaction, because browsers block
+  autoplay.
+- **The frame loop clamps `dt` to 50 ms.** On a machine rendering at a few
+  frames a second, a warp therefore takes far longer in wall-clock time than its
+  nominal ~4 s. That is deliberate — it stops a backgrounded tab from teleporting
+  the camera — but it makes the app look stuck under software WebGL.
+- **`prefers-reduced-motion` is not honoured.** Doing it properly means damping
+  the idle camera drift and shortening warps, not just the page-entry animation,
+  which is a product decision rather than a CSS one.
+- **The bottom dock is a fixed 320 px on mobile**, because the active pill uses a
+  fixed 150 px label slot so the dock never changes width as you travel. At a
+  320 px viewport that leaves no side margin. Phones that narrow are rare, but
+  the fix — if you want one — is to narrow the label slot, not to let it size to
+  content.
+- **No StrictMode.** Its double mount/unmount in development disposes the WebGL
+  context and then asks for a second one on the same canvas, which the browser
+  will not grant.
+- In development only, `window.galaxy` exposes `capture(dt, scale)`,
+  `resume()` and `jumpTo(i)` — the still/sequence capture used to produce the
+  teaser stills and the GIF in `design/project/assets`.
