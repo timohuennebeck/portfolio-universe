@@ -7,16 +7,21 @@ const doc = typeof document === 'undefined' ? {} : document;
 export const fullscreenSupported = () =>
   !!(doc.fullscreenEnabled || doc.webkitFullscreenEnabled);
 
-// The API flag is lost on reload even though the window is still fullscreen
-// (and it never knows about the macOS green button or F11), so also treat a
-// viewport that fills the screen as fullscreen — a browser with any chrome
-// showing is always shorter than the screen.
-const fillsScreen = () =>
-  typeof window !== 'undefined' && !!window.screen &&
-  window.innerWidth >= window.screen.width && window.innerHeight >= window.screen.height;
+// The API flag is lost on reload even though the window is still fullscreen,
+// and it never knows about the macOS green button or F11. So also treat the
+// window itself filling the screen as fullscreen: outerWidth/outerHeight is the
+// browser window including its toolbar, and only a fullscreen window reaches
+// the screen's full size (a normal one is shorter by the menu bar or taskbar).
+const windowFillsScreen = () => {
+  if (typeof window === 'undefined' || !window.screen) return false;
+  const { width, height } = window.screen;
+  const fits = (a, b) => a >= b - 2;
+  return (fits(window.outerWidth, width) && fits(window.outerHeight, height))
+    || (fits(window.innerWidth, width) && fits(window.innerHeight, height));
+};
 
 export const isFullscreen = () =>
-  !!(doc.fullscreenElement || doc.webkitFullscreenElement) || fillsScreen();
+  !!(doc.fullscreenElement || doc.webkitFullscreenElement) || windowFillsScreen();
 
 /** Resolves once the request has been issued; rejects if the browser refuses. */
 export function requestFullscreen(el = document.documentElement) {

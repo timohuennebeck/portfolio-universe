@@ -5,6 +5,11 @@ import { fullscreenSupported, isFullscreen, requestFullscreen, onFullscreenChang
 const APPEAR_AFTER_MS = 800;
 /** How long the nudge stays up, once visible, before it quietly leaves. */
 const AUTO_DISMISS_MS = 12000;
+/** Once a visitor has seen the nudge in this tab, a reload must not repeat it —
+    the tab is very likely still fullscreen, whatever the API says after a reload. */
+const SEEN_KEY = 'gp-fullscreen-nudged';
+const seenThisTab = () => { try { return sessionStorage.getItem(SEEN_KEY) === '1'; } catch { return false; } };
+const rememberSeen = () => { try { sessionStorage.setItem(SEEN_KEY, '1'); } catch { /* private mode, blocked storage: just show it again */ } };
 
 /**
  * A one-time invitation to go fullscreen, shown as the page lands.
@@ -20,10 +25,13 @@ const AUTO_DISMISS_MS = 12000;
 export default function FullscreenNudge({ t, hidden, onOpenChange }) {
   // 'pending' -> 'open' -> 'closed'
   const [phase, setPhase] = useState(() =>
-    fullscreenSupported() && !isFullscreen() ? 'pending' : 'closed'
+    fullscreenSupported() && !isFullscreen() && !seenThisTab() ? 'pending' : 'closed'
   );
   const open = phase === 'open';
   const close = () => setPhase('closed');
+  // whichever way it leaves — button, close, click-through, timeout, fullscreen —
+  // it has been seen
+  useEffect(() => { if (open) rememberSeen(); }, [open]);
 
   // Tell the stage when the nudge is up, so scrolling can't warp to the next
   // destination underneath it — arriving, warping, and then being asked to go
@@ -36,7 +44,7 @@ export default function FullscreenNudge({ t, hidden, onOpenChange }) {
       () => setPhase(phase === 'pending' ? 'open' : 'closed'),
       phase === 'pending' ? APPEAR_AFTER_MS : AUTO_DISMISS_MS
     );
-    const offChange = onFullscreenChange(() => { if (isFullscreen()) close(); });
+    const offChange = onFullscreenChange(() => { if (isFullscreen()) { rememberSeen(); close(); } });
     return () => {
       clearTimeout(timer);
       offChange();
