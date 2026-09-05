@@ -4,6 +4,7 @@ import { AMBIENCE, QUALITY, BLOOM } from './config.js';
 import { layoutFor } from './layout.js';
 import { Hints, NavDock, AboutButton, SoundButton } from './components/Hud.jsx';
 import ArrivalCard from './components/ArrivalCard.jsx';
+import FullscreenNudge from './components/FullscreenNudge.jsx';
 import Overlay from './components/Overlay.jsx';
 
 const smooth01 = x => { x = Math.max(0, Math.min(1, x)); return x * x * (3 - 2 * x); };
@@ -491,6 +492,8 @@ export default class GalaxyPortfolio extends React.Component {
                 {...hud}
               />
             )}
+
+            {ui.desktop && <FullscreenNudge t={t} hidden={overlayOpen} />}
           </>
         )}
 
