@@ -559,7 +559,7 @@ const Overlay = forwardRef(function Overlay(props, ref) {
             }}>
               <span>{t.back}</span>
               {ui.desktop && (
-                <span style={{ fontFamily: MONO, fontSize: 10, opacity: .55 }}>ESC</span>
+                <span style={{ fontFamily: MONO, fontSize: 10, lineHeight: 1, opacity: .55, position: 'relative', top: 1 }}>ESC</span>
               )}
             </button>
           </div>
