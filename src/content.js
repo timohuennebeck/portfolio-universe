@@ -71,4 +71,7 @@ export const UI_STRINGS = {
   email: 'Email Timo',
   toolkit: 'Toolkit',
   warp: 'Warp to',
+  fullscreenNudge: 'This experience is best in fullscreen.',
+  enterFullscreen: 'Enter fullscreen',
+  dismiss: 'Dismiss',
 };
