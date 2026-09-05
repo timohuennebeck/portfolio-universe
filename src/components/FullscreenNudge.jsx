@@ -17,13 +17,18 @@ const AUTO_DISMISS_MS = 12000;
  * only: the parent does not mount it on the mobile layout, and browsers that
  * cannot go fullscreen at all (iPhone Safari) never see it either.
  */
-export default function FullscreenNudge({ t, hidden }) {
+export default function FullscreenNudge({ t, hidden, onOpenChange }) {
   // 'pending' -> 'open' -> 'closed'
   const [phase, setPhase] = useState(() =>
     fullscreenSupported() && !isFullscreen() ? 'pending' : 'closed'
   );
   const open = phase === 'open';
   const close = () => setPhase('closed');
+
+  // Tell the stage when the nudge is up, so scrolling can't warp to the next
+  // destination underneath it — arriving, warping, and then being asked to go
+  // fullscreen reads as three unrelated things happening at once.
+  useEffect(() => { if (onOpenChange) onOpenChange(open); }, [open, onOpenChange]);
 
   useEffect(() => {
     if (phase === 'closed') return;
@@ -75,7 +80,7 @@ export default function FullscreenNudge({ t, hidden }) {
           pointerEvents: shown ? 'auto' : 'none',
           display: 'flex', alignItems: 'center', gap: 6,
           maxWidth: 'calc(100% - 32px)',
-          height: 64, padding: '0 14px 0 26px', borderRadius: 999,
+          height: 54, padding: '0 10px 0 22px', borderRadius: 999,
           background: 'rgba(6,10,20,.85)', border: '1px solid rgba(255,255,255,.1)',
           color: '#eef2f8', fontSize: 15, whiteSpace: 'nowrap',
           boxShadow: '0 20px 60px rgba(0,0,0,.45)',
@@ -88,7 +93,7 @@ export default function FullscreenNudge({ t, hidden }) {
           className="gp-light"
           style={{
             background: '#eef2f8', color: '#02040a', border: 0, cursor: 'pointer',
-            padding: '0 22px', height: 44, borderRadius: 999, fontSize: 14, fontWeight: 500,
+            padding: '0 18px', height: 38, borderRadius: 999, fontSize: 14, fontWeight: 500,
             transition: 'background .3s',
           }}
         >
@@ -100,7 +105,7 @@ export default function FullscreenNudge({ t, hidden }) {
           aria-label={t.dismiss}
           className="gp-quiet"
           style={{
-            background: 'transparent', border: 0, cursor: 'pointer', width: 44, height: 44,
+            background: 'transparent', border: 0, cursor: 'pointer', width: 38, height: 38,
             borderRadius: '50%', color: 'rgba(238,242,248,.55)', fontSize: 18, lineHeight: 1,
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             transition: 'color .3s',

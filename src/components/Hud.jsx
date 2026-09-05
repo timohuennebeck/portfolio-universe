@@ -1,4 +1,5 @@
 import React from 'react';
+import portraitSrc from '../assets/portrait.jpg';
 
 export const MONO = "'IBM Plex Mono',monospace";
 
@@ -98,9 +99,9 @@ export function AboutButton({ ui, label, onClick, opacity, pointerEvents }) {
         opacity, pointerEvents,
       }}
     >
-      <span style={{
-        width: 20, height: 20, borderRadius: '50%',
-        background: 'linear-gradient(135deg,#7fd8ff,#c8a4ff)', opacity: .85,
+      <img src={portraitSrc} alt="" aria-hidden="true" style={{
+        width: 22, height: 22, borderRadius: '50%', objectFit: 'cover', display: 'block',
+        border: '1px solid rgba(255,255,255,.18)',
       }} />
       <span>{label}</span>
     </button>

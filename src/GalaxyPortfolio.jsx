@@ -41,6 +41,10 @@ export default class GalaxyPortfolio extends React.Component {
   driftK = 0;
   mouse = { x: 0, y: 0, inside: false };
   wheelLock = 0;
+  // landing grace: no travel by any means until this timestamp
+  landLock = 0;
+  nudgeUp = false;
+  setNudgeUp = up => { this.nudgeUp = up; };
   speedNorm = 0;
   arrived = 1;
   burst = 0;
@@ -60,6 +64,10 @@ export default class GalaxyPortfolio extends React.Component {
 
   jumpTo = i => {
     if (!this.camera || this.warp) return;
+    // Same lock as scrolling: no travel while the fullscreen nudge is up, or in
+    // the first moment after landing — from the nav dots, the arrival card,
+    // the hash, or "Continue to".
+    if (this.nudgeUp || performance.now() < this.landLock) return;
     if (i === this.state.idx) return this.closeOverlay();
     const to = (this.landing = this.arrival(i, this.camera.position));
     const dist = this.camera.position.distanceTo(to.pos);
@@ -210,9 +218,13 @@ export default class GalaxyPortfolio extends React.Component {
       if (this.state.aboutOpen) return;
       if (k === 'Enter' || k === ' ') { e.preventDefault(); this.openOverlay('pageOpen'); }
     };
+    // No travel while the fullscreen nudge is up, and none in the first moment
+    // after landing (the nudge appears shortly after), so a stray scroll on
+    // arrival can't warp away before the visitor has seen where they are.
+    this.landLock = performance.now() + 1500;
     this.onWheel = e => {
       const now = performance.now();
-      if (this.busy || now < this.wheelLock || Math.abs(e.deltaY) < 8) return;
+      if (this.busy || this.nudgeUp || now < this.landLock || now < this.wheelLock || Math.abs(e.deltaY) < 8) return;
       this.wheelLock = now + 900;
       this.step(e.deltaY > 0 ? 1 : -1);
     };
@@ -493,7 +505,7 @@ export default class GalaxyPortfolio extends React.Component {
               />
             )}
 
-            {ui.desktop && <FullscreenNudge t={t} hidden={overlayOpen} />}
+            {ui.desktop && <FullscreenNudge t={t} hidden={overlayOpen} onOpenChange={this.setNudgeUp} />}
           </>
         )}
 
