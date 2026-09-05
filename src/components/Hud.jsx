@@ -35,6 +35,20 @@ export function Hints({ ui, t, opacity }) {
   );
 }
 
+/** Who this is — top-left on desktop, the one line a scanner wants before
+    opening anything. Mobile has the About button in that corner instead. */
+export function Byline({ ui, about, opacity }) {
+  return (
+    <div style={{
+      position: 'absolute', left: ui.edge, top: ui.hudTop, zIndex: 2, fontSize: 13,
+      lineHeight: 1.4, color: 'rgba(238,242,248,.55)', pointerEvents: 'none',
+      whiteSpace: 'nowrap', opacity, transition: 'opacity .5s',
+    }}>
+      <span style={{ color: '#eef2f8' }}>{about.name}</span> · {about.role} · {about.location}
+    </div>
+  );
+}
+
 /** Bottom dock: one pill per destination. On mobile only the active pill shows
     its title, in a fixed-width slot, so the dock never changes width. */
 export function NavDock({ ui, nodes, idx, onGo, opacity, pointerEvents }) {
