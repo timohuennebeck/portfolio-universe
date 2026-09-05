@@ -269,7 +269,10 @@ export default class GalaxyPortfolio extends React.Component {
     const UP = new T.Vector3(0, 1, 0), center = new T.Vector3(), off = new T.Vector3();
     const right = new T.Vector3(), target = new T.Vector3(), lookM = new T.Matrix4();
     const ndc = new T.Vector2();
-    let labelShown = null;
+    // The arrival card is projected with this camera: the live one's pose plus
+    // nothing else — no mouse look, no idle sway.
+    const labelCam = new T.PerspectiveCamera(56, 1, 0.1, 6000);
+    let labelShown = null, labelLeft = '', labelTop = '';
 
     const frame = () => {
       const cap = this.cap;
@@ -357,17 +360,28 @@ export default class GalaxyPortfolio extends React.Component {
       const lb = this.labelRef.current, n = this.nodes[S.cardIdx];
       if (lb && n && this.rect) {
         const show = !w && !overlay && this.arrived > 0.4;
+        // Project with the base orientation only. The live camera also carries
+        // the mouse look and the idle sway, and a card that followed those kept
+        // shifting under the pointer; this way it moves with warps and orbit
+        // drags and holds still otherwise.
+        labelCam.position.copy(camera.position);
+        labelCam.quaternion.copy(this.baseQ);
+        labelCam.aspect = camera.aspect;
+        labelCam.updateProjectionMatrix();
+        labelCam.updateMatrixWorld(true);
         // Anchor a fixed share of the viewport below the object's centre — the
         // same for a galaxy, the black hole and the sun, so the card sits at one
-        // height across destinations. (Hanging it under the galaxy's world
-        // radius put it far lower for the edge-on galaxies than for the others.)
-        tmp.set(n.pos[0], n.pos[1], n.pos[2]).project(camera);
+        // height across destinations. Whole pixels, so the text never sits on a
+        // subpixel and shimmers.
+        tmp.set(n.pos[0], n.pos[1], n.pos[2]).project(labelCam);
         if (show && tmp.z < 1) {
-          lb.style.left = `${((tmp.x * 0.5 + 0.5) * this.rect.width).toFixed(1)}px`;
-          lb.style.top = `${Math.min(
+          const left = `${Math.round((tmp.x * 0.5 + 0.5) * this.rect.width)}px`;
+          const top = `${Math.round(Math.min(
             this.rect.height - 300,
             Math.max(this.rect.height * 0.4, (-tmp.y * 0.5 + 0.5) * this.rect.height + this.rect.height * 0.19),
-          ).toFixed(1)}px`;
+          ))}px`;
+          if (left !== labelLeft) lb.style.left = labelLeft = left;
+          if (top !== labelTop) lb.style.top = labelTop = top;
         }
         if (show !== labelShown) {
           labelShown = show;
