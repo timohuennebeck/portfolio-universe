@@ -82,7 +82,7 @@ export const PROJECTS = [
         'With no crash reporting, [[the only bugs I fixed were the ones someone bothered to tell me about]].',
       ], after: 'Both gaps are the reason the first thing I pushed for later, on a product with a million users, was [[proper funnels and error tracking before anything else]].' },
     ],
-    stack: [{ title: 'React Native (Expo)' }, { title: 'TypeScript' }, { title: 'Supabase' }, { title: 'Supabase Realtime' }, { title: 'PostgreSQL' }, { title: 'PostHog' }, { title: 'RevenueCat' }] },
+    stack: [{ title: 'React Native' }, { title: 'Expo' }, { title: 'TypeScript' }, { title: 'Supabase' }, { title: 'Supabase Realtime' }, { title: 'PostgreSQL' }, { title: 'PostHog' }, { title: 'RevenueCat' }] },
   { id: 'blaulichtschule', meta: ['Client work · Horizon Alpha', '2023', 'React Native Developer', 'Team of 4', '6 months'], kind: 'Client work · 02', title: 'Blaulichtschule', tint: '#5b8cff', tagline: 'Inheriting a codebase nobody could safely touch, and rewriting it from the ground up — no AI, just four people and React Native.',
     sections: [
       { text: true, body: 'Blaulichtschule is a criminal-law exam-prep app for German police trainees — real case studies, head-to-head quizzes, and content built with practicing lawyers. We took it over from the previous development team, and the codebase we inherited was close to unworkable: [[no reusable components, layout done with absolute positioning throughout]], no one able to say with confidence what a given screen actually depended on.' },
@@ -127,7 +127,7 @@ export const PROJECTS = [
       { text: true, body: 'I shut it down in October. Fitness is one of the most crowded app categories there is, and without funding — or the time to market it properly — a solo product in it doesn\'t go anywhere: [[fewer than a hundred people ever used it]], and the TikToks and Instagram posts around it never found traction.' },
       { text: true, body: 'I never ran that marathon. I did run a half — [[1:58]] — on a plan that did exactly what Traqa was built to do: start from where the knee actually was, about five kilometres a week, and build week by week to around thirty-five, adjusting to how it felt. The honest part is where that plan came from. I used Traqa for the first weeks of recovery, and a Claude conversation for the rest. [[The idea was right; the app around it never earned its place]] over a model in a chat window — and that, together with a hard-won respect for offline-first mobile work, is what I keep from it.' },
     ],
-    stack: [{ title: 'React Native (Expo)' }, { title: 'TypeScript' }, { title: 'Supabase' }, { title: 'PostgreSQL' }, { title: 'Mapbox' }, { title: 'PostHog' }, { title: 'RevenueCat' }, { title: 'LLM plan generation' }, { title: 'Background GPS' }, { title: 'Offline-first' }] },
+    stack: [{ title: 'React Native' }, { title: 'Expo' }, { title: 'TypeScript' }, { title: 'Supabase' }, { title: 'PostgreSQL' }, { title: 'Mapbox' }, { title: 'PostHog' }, { title: 'RevenueCat' }, { title: 'LLM plan generation' }, { title: 'Background GPS' }, { title: 'Offline-first' }] },
 ];
 
 export const ABOUT = {
@@ -137,7 +137,7 @@ export const ABOUT = {
   email: 'jantimohuennebeck@gmail.com',
   linkedin: 'https://www.linkedin.com/in/timo-huennebeck',
   twitter: 'https://x.com/TimoHuennebeck',
-  toolkit: ['TypeScript', 'React', 'React Native (Expo)', 'Next.js', 'Astro', 'Tailwind CSS', 'Node.js', 'PostgreSQL', 'Supabase', 'AWS', 'Docker', 'GitLab CI', 'Cypress', 'Sentry', 'Amplitude', 'Claude Code'].map(title => ({ title })),
+  toolkit: ['TypeScript', 'React', 'React Native', 'Expo', 'Next.js', 'Astro', 'Tailwind CSS', 'Node.js', 'PostgreSQL', 'Supabase', 'AWS', 'Docker', 'GitLab CI', 'Cypress', 'Sentry', 'Amplitude', 'Claude Code'].map(title => ({ title })),
 };
 
 // UI strings. The app is English only.
