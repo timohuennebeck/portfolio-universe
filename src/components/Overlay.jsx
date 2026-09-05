@@ -443,7 +443,7 @@ function AboutPage({ ui, t, about }) {
               borderRadius: 999, background: '#eef2f8', color: '#02040a', fontSize: 14,
               fontWeight: 500, transition: 'background .3s',
             }}>{t.email}</a>
-            {[['LinkedIn', about.linkedin], ['Twitter', about.twitter]].map(([label, href]) => (
+            {[['LinkedIn', about.linkedin], ['X', about.twitter]].map(([label, href]) => (
               <a key={label} href={href} target="_blank" rel="noopener noreferrer" className="gp-dashed" style={{
                 fontSize: 15, color: 'rgba(238,242,248,.7)',
                 borderBottom: '1px dashed rgba(238,242,248,.35)', paddingBottom: 2,
