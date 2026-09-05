@@ -160,6 +160,7 @@ export const UI_STRINGS = {
   soundOff: 'Sound off',
   back: 'Back to space',
   email: 'Email Timo',
+  downloadCv: 'Download CV',
   toolkit: 'Toolkit',
   warp: 'Continue to',
   fullscreenNudge: 'This experience is best in fullscreen.',
