@@ -15,22 +15,73 @@ const glass = {
   transition: 'opacity .5s, background .3s',
 };
 
-/** Interaction hints. Top-right on both layouts; keyboard keys are desktop only. */
+const INTRO_MS = 6000;
+
+/** Interaction hints. Mobile: the touch line, always. Desktop: a bare "i"
+    top-right with the Scroll / Drag / Enter row to its left. The row shows
+    by itself on first arrival and folds into the icon after a few seconds
+    or at the first scroll, drag, key or page — hover only after that. */
 export function Hints({ ui, t, opacity }) {
+  const [intro, setIntro] = React.useState(true);
+  const [hover, setHover] = React.useState(false);
+  React.useEffect(() => {
+    if (!intro) return;
+    const end = () => setIntro(false);
+    const timer = setTimeout(end, INTRO_MS);
+    const evs = ['wheel', 'pointerdown', 'keydown'];
+    evs.forEach(e => window.addEventListener(e, end, { once: true, passive: true }));
+    return () => { clearTimeout(timer); evs.forEach(e => window.removeEventListener(e, end)); };
+  }, [intro]);
+  React.useEffect(() => { if (opacity === 0) setIntro(false); }, [opacity]);
+  const open = intro || hover;
+
+  if (ui.mobile) {
+    return (
+      <div style={{
+        position: 'absolute', left: ui.hudLeft, right: ui.edge, top: ui.hudTop, zIndex: 2,
+        display: 'flex', justifyContent: ui.hudJustify, textAlign: 'right',
+        fontSize: ui.hudSize, lineHeight: 1.4, color: 'rgba(238,242,248,.45)',
+        pointerEvents: 'none', opacity, transition: 'opacity .5s',
+      }}><span>{t.touchHint}</span></div>
+    );
+  }
   return (
-    <div style={{
-      position: 'absolute', left: ui.hudLeft, right: ui.edge, top: ui.hudTop, zIndex: 2,
-      display: 'flex', justifyContent: ui.hudJustify, textAlign: 'right', gap: 22,
-      fontSize: ui.hudSize, lineHeight: 1.4, color: 'rgba(238,242,248,.45)',
-      pointerEvents: 'none', opacity, transition: 'opacity .5s',
-    }}>
-      {ui.mobile ? <span>{t.touchHint}</span> : (
-        <>
-          <span style={hint}><kbd style={kbd}>Scroll</kbd> {t.scroll}</span>
-          <span style={hint}><kbd style={kbd}>Drag</kbd> {t.drag}</span>
-          <span style={hint}><kbd style={kbd}>Enter</kbd> {t.enter}</span>
-        </>
-      )}
+    <div
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
+      style={{
+        position: 'absolute', right: ui.edge, top: ui.hudTop, zIndex: 2,
+        display: 'flex', alignItems: 'center', gap: 22,
+        fontSize: ui.hudSize, lineHeight: 1.4, color: 'rgba(238,242,248,.45)',
+        opacity, pointerEvents: opacity ? 'auto' : 'none', transition: 'opacity .5s',
+      }}
+    >
+      <div aria-hidden={!open} style={{
+        display: 'flex', gap: 22, opacity: open ? 1 : 0,
+        transform: open ? 'none' : 'translateX(8px)', pointerEvents: open ? 'auto' : 'none',
+        transition: 'opacity .25s ease, transform .25s ease',
+      }}>
+        <span style={hint}><kbd style={kbd}>Scroll</kbd> {t.scroll}</span>
+        <span style={hint}><kbd style={kbd}>Drag</kbd> {t.drag}</span>
+        <span style={hint}><kbd style={kbd}>Enter</kbd> {t.enter}</span>
+      </div>
+      <button
+        type="button"
+        aria-label={t.controls}
+        aria-expanded={open}
+        onFocus={() => setHover(true)}
+        onBlur={() => setHover(false)}
+        className="gp-quiet"
+        style={{
+          width: 22, height: 22, padding: 0, border: 0, background: 'none', cursor: 'default',
+          color: open ? '#eef2f8' : 'rgba(238,242,248,.5)', display: 'flex', alignItems: 'center',
+          justifyContent: 'center', transition: 'color .3s',
+        }}
+      >
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="10" /><path d="M12 16v-4" /><path d="M12 8h.01" />
+        </svg>
+      </button>
     </div>
   );
 }
