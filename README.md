@@ -1,4 +1,4 @@
-# Galaxy Portfolio
+# Portfolio Universe
 
 An interactive 3D portfolio. Each project is a destination in space — a particle
 galaxy, a black hole or a sun — and you warp between them along a curved flight
