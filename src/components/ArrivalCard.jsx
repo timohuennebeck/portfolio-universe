@@ -29,7 +29,7 @@ const ArrivalCard = forwardRef(function ArrivalCard({ ui, t, node, onOpen }, ref
         className="gp-light"
         style={{
           marginTop: 8, pointerEvents: 'auto', background: '#eef2f8', color: '#02040a',
-          border: 0, padding: '14px 26px', borderRadius: 999, fontSize: 14, fontWeight: 500,
+          border: 0, padding: '13px 26px', borderRadius: 999, fontSize: 14, fontWeight: 500,
           cursor: 'pointer', display: 'flex', gap: 12, alignItems: 'center',
           boxShadow: '0 0 40px rgba(255,255,255,.12)',
         }}
