@@ -153,7 +153,6 @@ export const UI_STRINGS = {
   scroll: 'to travel',
   drag: 'to orbit',
   enter: 'to open',
-  controls: 'How to navigate',
   open: 'Open',
   aboutShort: 'About',
   sound: 'Sound',
