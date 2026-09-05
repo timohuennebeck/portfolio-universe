@@ -34,9 +34,12 @@
 //         `independent: true` makes each column its own share of 100 (a rate before/after),
 //         `reachedLabel` / `droppedLabel` rename the legend
 //   { rating: true, title, note?, value, outOf?, caption?, label?,
-//     distribution?: [pct5,pct4,pct3,pct2,pct1], quote?: {stars, line, source} }
-//       · the App Store rating, its breakdown, and one review — a page's single
-//         social-proof block; place it after the outcome, not before the story
+//     distribution?: [pct5,pct4,pct3,pct2,pct1] }
+//       · the App Store rating and its breakdown; place it after the outcome,
+//         not before the story
+//   { quote: true, stars, line, source? }
+//       · one review, centred, as the page's last word — after the closing
+//         paragraph, never directly under the rating
 //   { waffle: true, title, note?, items: [{label, value, pct, color?}] }
 //       · 100 squares coloured by share (fixed colours per item, not the tint)
 export const PROJECTS = [
@@ -58,9 +61,9 @@ export const PROJECTS = [
         ] },
       ] },
       { text: true, body: 'The data pointed at one screen — the point where an anonymous user is asked to [[create an account just to keep the test they had already built]]. Before, that prompt sent people away to a separate page to log in or register, and a new account then had to get through a multi-question onboarding before it ever saw the app again. Two weeks of back and forth with our UI/UX designer, every round checked against the funnel rather than opinion, ended in something much smaller: [[a popup asking for an email, one click on sign up, and you are in the app with your test saved]] — no detour, no onboarding. The redesign itself took a single afternoon to implement, and the share of people who signed in to keep their test went from [[10% to 26%]].' },
-      { rating: true, title: 'Testimonials', note: 'The product this flow belongs to, as the German App Store rates it — and as one of this year\'s reviews puts it.', value: 4.5, caption: 'Over 82,000 ratings on the German App Store.', distribution: [72, 16, 6, 2, 5],
-        quote: { stars: 5, line: 'You just pick your school book and it builds your exercises — that\'s simply so much better than all the other apps.', source: 'App Store review, April 2026. Translated from German.' } },
+      { rating: true, title: 'Testimonials', note: 'The product this flow belongs to, as the German App Store rates it.', value: 4.5, caption: 'Over 82,000 ratings on the German App Store.', distribution: [72, 16, 6, 2, 5] },
       { text: true, body: 'That ratio — weeks of instrumenting and arguing, an afternoon of building — is the part of this project I\'d point to. The fix was small. [[Knowing which small fix to make was the actual work.]]' },
+      { quote: true, stars: 5, line: 'You just pick your school book and it builds your exercises — that\'s simply so much better than all the other apps.', source: 'App Store review, April 2026. Translated from German.' },
     ],
     stack: [{ title: 'React' }, { title: 'TypeScript' }, { title: 'Astro' }, { title: 'Amplitude' }, { title: 'GitLab CI' }] },
   { id: 'unload', meta: ['Independent project', '2023 — 2024', 'Founder', 'Team of 1', '20 months'], github: 'https://github.com/timohuennebeck/unload-mobile-app', kind: 'Independent · 01', title: 'Unload', tint: '#ff5f6d', blackhole: true, tagline: 'An accountability app for teenagers, built on groups instead of streaks — 12,000 sign-ups, a viral launch, and a clear-eyed decision to shut it down.',
@@ -97,9 +100,9 @@ export const PROJECTS = [
         'The [[flashcard system]] — the core of how people actually study. Question, answer, reveal, and the part users mention most in their reviews: [[wrong answers are saved automatically]], so you can drill exactly what you got wrong.',
         'The [[live matches]] — Juramatch, where two users go head-to-head on the same law questions in real time, with a nationwide ranking behind it. Real-time state on a mobile app, with the network dropping in and out.',
       ], after: 'None of these were greenfield: each had to keep working for the people already using it while we replaced the code underneath.' },
-      { rating: true, title: 'Testimonials', note: 'Three years on, the app we rewrote is the one on the App Store — and the one people are rating.', value: 4.7, caption: '116 ratings on the German App Store.', distribution: [87, 4, 3, 0, 5],
-        quote: { stars: 5, line: 'Navigation, load times and the learning areas are especially well thought out — they make the app a real experience.', source: 'App Store review, August 2023 — the month the rewrite was live. Translated from German.' } },
+      { rating: true, title: 'Testimonials', note: 'Three years on, the app we rewrote is the one on the App Store — and the one people are rating.', value: 4.7, caption: '116 ratings on the German App Store.', distribution: [87, 4, 3, 0, 5] },
       { text: true, body: 'What I remember more clearly than the numbers is the discipline it took: with a client this hands-on and a codebase this fragile, "rewrite it properly" and "keep shipping Friday fixes" [[had to happen at the same time]], not one after the other.' },
+      { quote: true, stars: 5, line: 'Navigation, load times and the learning areas are especially well thought out — they make the app a real experience.', source: 'App Store review, August 2023 — the month the rewrite was live. Translated from German.' },
     ],
     stack: [{ title: 'React Native' }, { title: 'TypeScript' }, { title: 'Bugsnag' }, { title: 'GitLab CI' }] },
   { id: 'planetpop', meta: ['Client work · Horizon Alpha', '2023 — 2025', 'Frontend Developer', 'Team of 3', 'On and off over 2 years'], kind: 'Client work · 03', title: 'PlanetPop', tint: '#c8a4ff', tagline: 'A learn-English-through-songs web app, built from an empty repo to paid subscriptions — infrastructure included.',
