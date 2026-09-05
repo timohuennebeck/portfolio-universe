@@ -15,22 +15,19 @@ const glass = {
   transition: 'opacity .5s, background .3s',
 };
 
-const INTRO_MS = 6000;
+const INTRO_MS = 12000;
 
 /** Interaction hints. Mobile: the touch line, always. Desktop: a bare "i"
     top-right with the Scroll / Drag / Enter row to its left. The row shows
-    by itself on first arrival and folds into the icon after a few seconds
-    or at the first scroll, drag, key or page — hover only after that. */
+    by itself for the first twelve seconds after arrival (or until a page
+    opens), then folds into the icon — hover only after that. */
 export function Hints({ ui, t, opacity }) {
   const [intro, setIntro] = React.useState(true);
   const [hover, setHover] = React.useState(false);
   React.useEffect(() => {
     if (!intro) return;
-    const end = () => setIntro(false);
-    const timer = setTimeout(end, INTRO_MS);
-    const evs = ['wheel', 'pointerdown', 'keydown'];
-    evs.forEach(e => window.addEventListener(e, end, { once: true, passive: true }));
-    return () => { clearTimeout(timer); evs.forEach(e => window.removeEventListener(e, end)); };
+    const timer = setTimeout(() => setIntro(false), INTRO_MS);
+    return () => clearTimeout(timer);
   }, [intro]);
   React.useEffect(() => { if (opacity === 0) setIntro(false); }, [opacity]);
   const open = intro || hover;
