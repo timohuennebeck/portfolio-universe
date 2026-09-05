@@ -2,7 +2,7 @@ import React from 'react';
 import { PROJECTS, ABOUT, UI_STRINGS } from './content.js';
 import { AMBIENCE, QUALITY, BLOOM } from './config.js';
 import { layoutFor } from './layout.js';
-import { Hints, NavDock, AboutButton, SoundButton, Byline } from './components/Hud.jsx';
+import { Hints, NavDock, AboutButton, SoundButton, Identity } from './components/Hud.jsx';
 import ArrivalCard from './components/ArrivalCard.jsx';
 import FullscreenNudge from './components/FullscreenNudge.jsx';
 import Overlay from './components/Overlay.jsx';
@@ -496,7 +496,6 @@ export default class GalaxyPortfolio extends React.Component {
         {ready && (
           <>
             <Hints ui={ui} t={t} opacity={hud.opacity} />
-            {ui.desktop && <Byline ui={ui} about={this.about} opacity={hud.opacity} />}
 
             <ArrivalCard
               ref={this.labelRef}
@@ -514,18 +513,22 @@ export default class GalaxyPortfolio extends React.Component {
               {...hud}
             />
 
-            <AboutButton
-              ui={ui}
-              label={mobile ? t.aboutShort : t.about}
-              onClick={() => this.openOverlay('aboutOpen')}
-              {...hud}
-            />
+            {ui.desktop ? (
+              <Identity ui={ui} about={this.about} onClick={() => this.openOverlay('aboutOpen')} {...hud} />
+            ) : (
+              <AboutButton
+                ui={ui}
+                label={t.aboutShort}
+                onClick={() => this.openOverlay('aboutOpen')}
+                {...hud}
+              />
+            )}
 
             {ui.desktop && (
               <SoundButton
                 ui={ui}
                 on={soundOn}
-                label={soundOn ? t.soundOn : t.soundOff}
+                label={t.sound}
                 onClick={this.toggleSound}
                 {...hud}
               />

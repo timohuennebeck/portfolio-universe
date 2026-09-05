@@ -35,17 +35,34 @@ export function Hints({ ui, t, opacity }) {
   );
 }
 
-/** Who this is — top-left on desktop, the one line a scanner wants before
-    opening anything. Mobile has the About button in that corner instead. */
-export function Byline({ ui, about, opacity }) {
+/** Who this is — top-left on desktop, bare on the top gradient: portrait,
+    name, role. The whole line opens About, so the name is the click target;
+    mobile keeps the small About button in that corner instead. */
+export function Identity({ ui, about, onClick, opacity, pointerEvents }) {
   return (
-    <div style={{
-      position: 'absolute', left: ui.edge, top: ui.hudTop, zIndex: 2, fontSize: 13,
-      lineHeight: 1.4, color: 'rgba(238,242,248,.55)', pointerEvents: 'none',
-      whiteSpace: 'nowrap', opacity, transition: 'opacity .5s',
-    }}>
-      <span style={{ color: '#eef2f8' }}>{about.name}</span> · {about.role} · {about.location}
-    </div>
+    <button
+      type="button"
+      onClick={onClick}
+      className="gp-identity"
+      aria-label={about.name}
+      style={{
+        position: 'absolute', left: ui.edge, top: ui.hudTop, zIndex: 2,
+        display: 'flex', alignItems: 'center', gap: 12, padding: 0, border: 0,
+        background: 'none', cursor: 'pointer', fontFamily: 'inherit', fontSize: 13,
+        lineHeight: 1.4, color: 'rgba(238,242,248,.55)', whiteSpace: 'nowrap',
+        opacity, pointerEvents, transition: 'opacity .5s',
+      }}
+    >
+      <img src={portraitSrc} alt="" aria-hidden="true" style={{
+        width: 22, height: 22, borderRadius: '50%', objectFit: 'cover', display: 'block',
+        border: '1px solid rgba(255,255,255,.18)',
+      }} />
+      <span className="gp-identity-name" style={{
+        color: '#eef2f8', borderBottom: '1px dashed transparent', paddingBottom: 1,
+        transition: 'border-color .3s',
+      }}>{about.name}</span>
+      <span>{about.role} · {about.location}</span>
+    </button>
   );
 }
 
@@ -124,24 +141,35 @@ export function AboutButton({ ui, label, onClick, opacity, pointerEvents }) {
   );
 }
 
-/** Desktop only — touch devices start silent and get no toggle. */
+/** Desktop only — touch devices start silent and get no toggle. A switch and
+    the word, bare on the bottom gradient: the knob carries the dock's green
+    glow when on, and the word dims when off. */
 export function SoundButton({ ui, on, label, onClick, opacity, pointerEvents }) {
-  const dot = on ? '#9fe8c4' : 'rgba(255,255,255,.25)';
   return (
     <button
       type="button"
       onClick={onClick}
       aria-pressed={on}
-      className="gp-glass"
+      className="gp-quiet"
       style={{
-        ...glass, position: 'absolute', right: ui.edge, bottom: ui.pillBottom,
-        zIndex: 2, padding: '0 16px', height: 44, opacity, pointerEvents,
+        position: 'absolute', right: ui.edge, bottom: ui.pillBottom, zIndex: 2,
+        height: 44, padding: '0 4px', border: 0, background: 'none', cursor: 'pointer',
+        display: 'flex', alignItems: 'center', gap: 10, fontFamily: 'inherit', fontSize: 13,
+        color: on ? 'rgba(238,242,248,.7)' : 'rgba(238,242,248,.4)',
+        opacity, pointerEvents, transition: 'opacity .5s, color .3s',
       }}
     >
-      <span style={{
-        width: 6, height: 6, borderRadius: '50%', background: dot, position: 'relative', top: 1,
-        boxShadow: `0 0 8px ${dot}`, transition: 'background .3s',
-      }} />
+      <span aria-hidden="true" style={{
+        position: 'relative', width: 30, height: 18, borderRadius: 999, flex: 'none',
+        background: on ? 'rgba(159,232,196,.28)' : 'rgba(255,255,255,.14)', transition: 'background .3s',
+      }}>
+        <span style={{
+          position: 'absolute', top: 2, left: 2, width: 14, height: 14, borderRadius: '50%',
+          background: on ? '#9fe8c4' : 'rgba(238,242,248,.7)',
+          boxShadow: on ? '0 0 8px #9fe8c4' : 'none',
+          transform: on ? 'translateX(12px)' : 'none', transition: 'transform .3s, background .3s, box-shadow .3s',
+        }} />
+      </span>
       <span>{label}</span>
     </button>
   );
