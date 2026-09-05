@@ -17,7 +17,6 @@ button { font: inherit; }
 .gp-glass:hover { color: #fff; background: rgba(255, 255, 255, .1); }
 .gp-quiet:hover { color: #fff; }
 .gp-dashed:hover { color: #fff; border-bottom-color: #fff; }
-.gp-identity:hover .gp-identity-name { border-bottom-color: #fff; }
 
 .gp-nav-pill:hover { color: #fff; background: rgba(255, 255, 255, .08); }
 /* The active pill already sits at .12; hovering it must not dim it. */
