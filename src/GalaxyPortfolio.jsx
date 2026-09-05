@@ -259,8 +259,6 @@ export default class GalaxyPortfolio extends React.Component {
       else post.resize(W, H);
     };
     fit();
-    this.ro = new ResizeObserver(() => fit(PR, true));
-    this.ro.observe(canvas);
 
     // frame loop
     const clock = new T.Clock();
@@ -400,6 +398,13 @@ export default class GalaxyPortfolio extends React.Component {
       frame();
     };
     loop();
+
+    // Resize observers run after this frame's rAF callback and before paint.
+    // Resizing the drawing buffer clears it, so without an immediate redraw the
+    // browser paints a black frame on every resize event — a flicker while the
+    // window edge is dragged. Fit, then draw again before the paint.
+    this.ro = new ResizeObserver(() => { fit(PR, true); frame(); });
+    this.ro.observe(canvas);
 
     if (import.meta.env.DEV) {
       // Still/sequence capture used to produce the PDF teaser and the GIF:
