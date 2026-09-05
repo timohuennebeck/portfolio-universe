@@ -141,10 +141,11 @@ export function AboutButton({ ui, label, onClick, opacity, pointerEvents }) {
   );
 }
 
-/** Desktop only — touch devices start silent and get no toggle. A switch and
-    the word, bare on the bottom gradient: the knob carries the dock's green
-    glow when on, and the word dims when off. */
+/** Desktop only — touch devices start silent and get no toggle. The word and
+    the dock's dot, bare on the bottom gradient: the dot is the state — lit and
+    glowing when on, grey when off — and the word dims with it. */
 export function SoundButton({ ui, on, label, onClick, opacity, pointerEvents }) {
+  const dot = on ? '#9fe8c4' : 'rgba(255,255,255,.25)';
   return (
     <button
       type="button"
@@ -159,18 +160,11 @@ export function SoundButton({ ui, on, label, onClick, opacity, pointerEvents }) 
         opacity, pointerEvents, transition: 'opacity .5s, color .3s',
       }}
     >
-      <span aria-hidden="true" style={{
-        position: 'relative', width: 30, height: 18, borderRadius: 999, flex: 'none',
-        background: on ? 'rgba(159,232,196,.28)' : 'rgba(255,255,255,.14)', transition: 'background .3s',
-      }}>
-        <span style={{
-          position: 'absolute', top: 2, left: 2, width: 14, height: 14, borderRadius: '50%',
-          background: on ? '#9fe8c4' : 'rgba(238,242,248,.7)',
-          boxShadow: on ? '0 0 8px #9fe8c4' : 'none',
-          transform: on ? 'translateX(12px)' : 'none', transition: 'transform .3s, background .3s, box-shadow .3s',
-        }} />
-      </span>
       <span>{label}</span>
+      <span aria-hidden="true" style={{
+        width: 6, height: 6, borderRadius: '50%', background: dot, position: 'relative', top: 1,
+        boxShadow: on ? `0 0 8px ${dot}` : 'none', transition: 'background .3s, box-shadow .3s',
+      }} />
     </button>
   );
 }
