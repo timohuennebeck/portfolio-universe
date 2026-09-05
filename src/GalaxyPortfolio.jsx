@@ -238,7 +238,7 @@ export default class GalaxyPortfolio extends React.Component {
     this.firstEvents.forEach(t => window.addEventListener(t, this.onFirst));
 
     // resize (cache the canvas rect; never read layout inside the frame loop)
-    const fit = (pr = PR) => {
+    const fit = (pr = PR, settling = false) => {
       this.rect = canvas.getBoundingClientRect();
       const w = this.rect.width || innerWidth, h = this.rect.height || innerHeight;
       const mob = w < 720;
@@ -250,10 +250,16 @@ export default class GalaxyPortfolio extends React.Component {
       const W = Math.floor(w * pr), H = Math.floor(h * pr);
       space.setResolution(W, H);
       space.setPixelRatio(pr);
-      post.resize(W, H);
+      // The five post buffers (half-float, full resolution) are rebuilt on every
+      // size change, and a window drag reports a new size every frame. Rebuild
+      // them once the size has settled: the composite samples them by UV, so
+      // frames in between still draw correctly at the previous buffer size.
+      clearTimeout(this.rtTimer);
+      if (settling) this.rtTimer = setTimeout(() => post.resize(W, H), 150);
+      else post.resize(W, H);
     };
     fit();
-    this.ro = new ResizeObserver(() => fit());
+    this.ro = new ResizeObserver(() => fit(PR, true));
     this.ro.observe(canvas);
 
     // frame loop
@@ -353,17 +359,16 @@ export default class GalaxyPortfolio extends React.Component {
       const lb = this.labelRef.current, n = this.nodes[S.cardIdx];
       if (lb && n && this.rect) {
         const show = !w && !overlay && this.arrived > 0.4;
-        // Anchor just under the object's visible bottom edge (world radius),
-        // then a fixed screen margin.
-        const fx = n.star || n.blackhole;
-        const radius = n.star ? 16 : n.blackhole ? 12 : 30;
-        const marginPx = fx ? 44 : -6;
-        tmp.set(n.pos[0], n.pos[1] - radius, n.pos[2]).project(camera);
+        // Anchor a fixed share of the viewport below the object's centre — the
+        // same for a galaxy, the black hole and the sun, so the card sits at one
+        // height across destinations. (Hanging it under the galaxy's world
+        // radius put it far lower for the edge-on galaxies than for the others.)
+        tmp.set(n.pos[0], n.pos[1], n.pos[2]).project(camera);
         if (show && tmp.z < 1) {
           lb.style.left = `${((tmp.x * 0.5 + 0.5) * this.rect.width).toFixed(1)}px`;
           lb.style.top = `${Math.min(
             this.rect.height - 300,
-            Math.max(this.rect.height * 0.4, (-tmp.y * 0.5 + 0.5) * this.rect.height + marginPx),
+            Math.max(this.rect.height * 0.4, (-tmp.y * 0.5 + 0.5) * this.rect.height + this.rect.height * 0.19),
           ).toFixed(1)}px`;
         }
         if (show !== labelShown) {
@@ -416,6 +421,7 @@ export default class GalaxyPortfolio extends React.Component {
   componentWillUnmount() {
     this.gen = (this.gen || 0) + 1;
     cancelAnimationFrame(this.raf);
+    clearTimeout(this.rtTimer);
     this.ro && this.ro.disconnect();
     window.removeEventListener('keydown', this.onKey);
     window.removeEventListener('hashchange', this.onHash);
