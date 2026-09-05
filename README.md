@@ -21,6 +21,20 @@ Requires a browser with WebGL. `npm run build` warns that the three.js chunk is
 over 500 kB — that is three.js itself, already split into its own chunk, and is
 expected.
 
+## Deploying to GitHub Pages
+
+`.github/workflows/deploy.yml` builds and deploys on every push to `main` — no
+`gh-pages` branch, no committed `dist/`. One manual, one-time step: in the
+repo's **Settings → Pages**, set **Source** to **GitHub Actions**. After that,
+every push to `main` publishes automatically; watch it under the repo's
+**Actions** tab.
+
+The build is served from `/portfolio-universe/`, not the domain root — see the
+conditional `base` in `vite.config.js` — because that's the path a GitHub Pages
+project site (as opposed to a `<user>.github.io` user site) is served from.
+Deep links use `location.hash` (`/#traqa`), not real paths, so unlike most
+single-page apps this needs no 404-redirect trick to work on a static host.
+
 ## Where things live
 
 ```
