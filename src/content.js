@@ -43,12 +43,12 @@
 //   { waffle: true, title, note?, items: [{label, value, pct, color?}] }
 //       · 100 squares coloured by share (fixed colours per item, not the tint)
 export const PROJECTS = [
-  { id: 'phase6', meta: ['Client work · Horizon Alpha', '2025', 'Frontend Developer', 'Team of 3', '5 weeks'], kind: 'Client work · 01', title: 'Phase6', tint: '#ffb066', tagline: 'Building the analytics Phase6 didn\'t have, finding the one screen where teachers gave up, and shipping the fix that took registrations from 10% to 26%.',
+  { id: 'phase6', meta: ['Client work · Horizon Alpha', '2025', 'Frontend Developer', 'Team of 3', '5 weeks'], kind: 'Client work · 01', title: 'Phase6', tint: '#ffb066', tagline: 'Building the analytics Phase6 didn\'t have, finding the one screen where teachers gave up, and shipping the fix that took registrations from 10% to 18%.',
     sections: [
       { text: true, body: 'Phase6 is a vocabulary-learning platform used by over a million students in Germany. Teachers can build a test through an anonymous flow that needs no account — but [[nobody could say how many people who started ever finished]]. There was no analytics on the flow at all.' },
       { text: true, body: 'Nobody asked me to fix this — I proposed introducing Amplitude after noticing we kept changing the anonymous flow on assumptions, not evidence. Over about two weeks I mapped every step from starting a test to saving it into a [[proper event taxonomy]], instrumented it, and built the funnels to see where the flow actually broke down.' },
       // Percentages only, on purpose: the absolute counts behind them are Phase6's traffic figures.
-      { funnel: true, title: 'Test creation: before and after', note: 'The share of anonymous users still in the flow at each step. The step that mattered — registering to keep the test you just built — went from one in ten to more than one in four.', tabs: [
+      { funnel: true, title: 'Test creation: before and after', note: 'The share of anonymous users still in the flow at each step. The step that mattered — registering to keep the test you just built — went from one in ten to close to one in five.', tabs: [
         { label: 'Before the redesign', steps: [
           { label: 'Test creation started', pct: 100 },
           { label: 'Save prompt shown', pct: 47.66 },
@@ -57,10 +57,10 @@ export const PROJECTS = [
         { label: 'After the redesign', steps: [
           { label: 'Test creation started', pct: 100 },
           { label: 'Save prompt shown', pct: 47.66 },
-          { label: 'Registered to save', pct: 26 },
+          { label: 'Registered to save', pct: 18 },
         ] },
       ] },
-      { text: true, body: 'The data pointed at one screen — the point where an anonymous user is asked to [[create an account just to keep the test they had already built]]. Before, that prompt sent people away to a separate page to log in or register, and a new account then had to get through a multi-question onboarding before it ever saw the app again. Two weeks of back and forth with our UI/UX designer, every round checked against the funnel rather than opinion, ended in something much smaller: [[a popup asking for an email, one click on sign up, and you are in the app with your test saved]] — no detour, no onboarding. The redesign itself took a single afternoon to implement, and the share of people who registered to keep their test went from [[10% to 26%]].' },
+      { text: true, body: 'The data pointed at one screen — the point where an anonymous user is asked to [[create an account just to keep the test they had already built]]. Before, that prompt sent people away to a separate page to log in or register, and a new account then had to get through a multi-question onboarding before it ever saw the app again. Two weeks of back and forth with our UI/UX designer, every round checked against the funnel rather than opinion, ended in something much smaller: [[a popup asking for an email, one click on sign up, and you are in the app with your test saved]] — no detour, no onboarding. The redesign itself took a single afternoon to implement, and the share of people who registered to keep their test went from [[10% to 18%]].' },
       { rating: true, title: 'Testimonials', note: 'The product this flow belongs to, as the German App Store rates it.', value: 4.5, caption: 'Over 82,000 ratings on the German App Store.', distribution: [72, 16, 6, 2, 5] },
       { text: true, body: 'That ratio — weeks of instrumenting and arguing, an afternoon of building — is the part of this project I\'d point to. The fix was small. [[Knowing which small fix to make was the actual work.]]' },
       { quote: true, stars: 5, line: 'You just pick your school book and it builds your exercises — that\'s simply so much better than all the other apps.', source: 'App Store review, April 2026. Translated from German.' },
