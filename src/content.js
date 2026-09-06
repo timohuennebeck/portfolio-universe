@@ -14,7 +14,7 @@
 //   github    · optional; shortcut for a single GitHub link
 //   links     · optional; [{url, label?, icon?}] — one dashed text link each, for
 //               anything that isn't a personal repo (App Store, a live site).
-//               icon is 'github' or 'external' (default). Overrides `github`.
+//               icon is 'github', 'globe' (a live site) or 'external' (default). Overrides `github`.
 //   star      · render this destination as a sun instead of a particle galaxy
 //   blackhole · render this destination as a black hole instead of a particle galaxy
 //   offset    · nudge from the computed route position, so a destination does not
@@ -43,7 +43,7 @@
 //   { waffle: true, title, note?, items: [{label, value, pct, color?}] }
 //       · 100 squares coloured by share (fixed colours per item, not the tint)
 export const PROJECTS = [
-  { id: 'phase6', meta: ['Client work · Horizon Alpha', '2025', 'Frontend Developer', 'Team of 3', '5 weeks'], kind: 'Client work · 01', title: 'Phase6', tint: '#ffb066', tagline: 'Building the analytics Phase6 didn\'t have, finding the one screen where teachers gave up, and shipping the fix that took registrations from 10% to 18%.',
+  { id: 'phase6', meta: ['Client work · Horizon Alpha', '2025', 'Frontend Developer', 'Team of 3', '5 weeks'], kind: 'Client work · 01', title: 'Phase6', tint: '#ffb066', links: [{ url: 'https://www.phase-6.de/', icon: 'globe' }], tagline: 'Building the analytics Phase6 didn\'t have, finding the one screen where teachers gave up, and shipping the fix that took registrations from 10% to 18%.',
     sections: [
       { text: true, body: 'Phase6 is a vocabulary-learning platform used by over a million students in Germany. Teachers can build a test through an anonymous flow that needs no account — but [[nobody could say how many people who started ever finished]]. There was no analytics on the flow at all.' },
       { text: true, body: 'Nobody asked me to fix this — I proposed introducing Amplitude after noticing we kept changing the anonymous flow on assumptions, not evidence. Over about two weeks I mapped every step from starting a test to saving it into a [[proper event taxonomy]], instrumented it, and built the funnels to see where the flow actually broke down.' },
@@ -105,7 +105,7 @@ export const PROJECTS = [
       { quote: true, stars: 5, line: 'Navigation, load times and the learning areas are especially well thought out — they make the app a real experience.', source: 'App Store review, August 2023 — the month the rewrite was live. Translated from German.' },
     ],
     stack: [{ title: 'React Native' }, { title: 'TypeScript' }, { title: 'Bugsnag' }, { title: 'GitLab CI' }] },
-  { id: 'planetpop', meta: ['Client work · Horizon Alpha', '2023 — 2025', 'Frontend Developer', 'Team of 3', 'On and off over 2 years'], kind: 'Client work · 03', title: 'PlanetPop', tint: '#c8a4ff', tagline: 'A learn-English-through-songs web app, built from an empty repo to paid subscriptions — infrastructure included.',
+  { id: 'planetpop', meta: ['Client work · Horizon Alpha', '2023 — 2025', 'Frontend Developer', 'Team of 3', 'On and off over 2 years'], kind: 'Client work · 03', title: 'PlanetPop', tint: '#c8a4ff', links: [{ url: 'https://www.planetpop.com/', icon: 'globe' }], tagline: 'A learn-English-through-songs web app, built from an empty repo to paid subscriptions — infrastructure included.',
     sections: [
       { text: true, body: 'PlanetPop teaches children English through original songs and videos, and had already built an audience of over 100,000 subscribers on YouTube. The web app didn\'t exist yet: [[we built it from scratch in React Native Web]], and stood up everything behind it too — the Scaleway hosting and the MongoDB database it ran on.' },
       { list: true, lead: 'There was no fixed role on this one; the work was whatever needed shipping next, on and off over two years. What we delivered [[from a blank repository]]:', items: [
