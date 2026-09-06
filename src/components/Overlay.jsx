@@ -63,6 +63,13 @@ const LINK_ICONS = {
       <path d="M10 14 21 3" />
     </svg>
   ),
+  globe: (
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="10" />
+      <path d="M2 12h20" />
+      <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+    </svg>
+  ),
 };
 
 /** External links (GitHub, App Store, a live site — anything worth pointing
@@ -70,11 +77,12 @@ const LINK_ICONS = {
     LinkedIn link on the About page, and deliberately not a pill, so they
     can't be mistaken for the stack chips above. A GitHub link shows its
     repo path ("timohuennebeck/running-app") rather than a generic label.
-    `project.github` still works on its own; `project.links` can hold more. */
+    `project.github` still works on its own; `project.links` can hold more
+    (icon 'github', 'globe' for a live site, or 'external'). */
 function LinkRow({ project }) {
   const links = project.links || (project.github ? [{ url: project.github, icon: 'github' }] : []);
   if (!links.length) return null;
-  const text = l => l.label || (l.icon === 'github' ? l.url.replace(/^https?:\/\/(www\.)?github\.com\//, '') : l.url.replace(/^https?:\/\/(www\.)?/, ''));
+  const text = l => l.label || (l.icon === 'github' ? l.url.replace(/^https?:\/\/(www\.)?github\.com\//, '') : l.url.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, ''));
   return (
     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px 26px', paddingTop: 2 }}>
       {links.map((l, i) => (
