@@ -162,7 +162,7 @@ float hash(vec2 p){p=fract(p*vec2(123.34,456.21));p+=dot(p,p+45.32);return fract
 float noise(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);return mix(mix(hash(i),hash(i+vec2(1,0)),f.x),mix(hash(i+vec2(0,1)),hash(i+vec2(1,1)),f.x),f.y);}
 float fbm(vec2 p){float v=0.,a=.5;for(int i=0;i<5;i++){v+=a*noise(p);p=p*2.03+vec2(1.7,9.2);a*=.5;}return v;}
 void main(){
-  vec2 p0=vUv*1.75; float r=length(p0); float t=uTime*.6;
+  vec2 p0=vUv*1.75; float r=length(p0); float t=uTime*1.2;
   // hover: like the galaxies' stars, the gas and its young stars part around the cursor with a slight
   // swirl, and the gas lights up where the cursor passes (uHover follows the cursor on the billboard)
   vec2 dm=p0-uHover*1.75; float md=length(dm); float inf=exp(-md*md/.018)*uHov;
@@ -179,7 +179,9 @@ void main(){
   // dense gas glows neon, thin gas at the edges stays blue
   vec3 col=mix(vec3(.05,.2,.42),NEON,smoothstep(.18,.62,gas))*gas;
   col+=mix(NEON,vec3(1.),.5)*pow(gas,3.)*.45;
-  float dust=smoothstep(.5,.72,fbm(q*1.4+w2*2.+3.));
+  // the dust lanes drift on their own: a slow turn plus a slide, so they visibly cross the gas
+  float da=uTime*.025; vec2 dq=mat2(cos(da),-sin(da),sin(da),cos(da))*q*1.4+vec2(uTime*.05,-uTime*.03);
+  float dust=smoothstep(.5,.72,fbm(dq+w2*2.+3.));
   col*=1.-dust*.82*fall;
   for(int i=0;i<6;i++){
     float fi=float(i);
