@@ -1,10 +1,12 @@
 // Portfolio content. Edit copy here; the UI reads it.
 
-import loqqaTraining from './assets/loqqa/training.webp';
-import loqqaWorkout from './assets/loqqa/workout.webp';
-import loqqaHistory from './assets/loqqa/exercise-history.webp';
-import loqqaMuscles from './assets/loqqa/level-muscles.webp';
-import loqqaImport from './assets/loqqa/plan-import.webp';
+import loqqaPlan from './assets/loqqa/plan.webp';
+import loqqaImport from './assets/loqqa/import.webp';
+import loqqaLog from './assets/loqqa/log.webp';
+import loqqaCompare from './assets/loqqa/compare.webp';
+import loqqaSets from './assets/loqqa/sets.webp';
+import loqqaHistory from './assets/loqqa/history.webp';
+import loqqaKai from './assets/loqqa/kai.webp';
 //
 // Per destination:
 //   id        · URL hash fragment, also the deep link
@@ -16,8 +18,8 @@ import loqqaImport from './assets/loqqa/plan-import.webp';
 //               under the title (Type / When / Role). Keep the order.
 //   media     · optional hero image path (e.g. '/projects/phase6/hero.png');
 //               omitted, the page opens straight into the copy
-//   screens   · optional app screenshots [{src, alt}], shown as a row of phone screens at the
-//               top of the page (it scrolls sideways on narrow screens); imported from src/assets
+//   screens   · optional app screenshots [{src, alt}], shown as a sideways-scrolling row at the
+//               top of the page; imported from src/assets, transparent around the phone
 //   stack     · chips under the tagline
 //   github    · optional; shortcut for a single GitHub link
 //   links     · optional; [{url, label?, icon?}] — one dashed text link each, for
@@ -55,12 +57,14 @@ import loqqaImport from './assets/loqqa/plan-import.webp';
 //       · 100 squares coloured by share (fixed colours per item, not the tint)
 export const PROJECTS = [
   { id: 'loqqa', meta: ['Independent project', '2026', 'Founder', 'Team of 1', '1 month'], kind: 'Independent · 03', title: 'Loqqa', tint: '#dfff1f', nebula: true, links: [{ url: 'https://apps.apple.com/app/id6826156839', label: 'App Store' }],
-    screens: [
-      { src: loqqaTraining, alt: 'The training week: this week\'s workouts, done and next' },
-      { src: loqqaWorkout, alt: 'A workout in progress, with suggested weight and reps for each set' },
-      { src: loqqaHistory, alt: 'An exercise\'s history: top weight per session over 90 days' },
-      { src: loqqaMuscles, alt: 'Every muscle group with its level and progress to the next one' },
-      { src: loqqaImport, alt: 'Importing a plan from a photo or a file' },
+    screens: [ // the App Store screens, English, in their store order
+      { src: loqqaPlan, alt: 'A plan tailored to you: the training week with the current Push Pull Legs block' },
+      { src: loqqaImport, alt: 'Switching apps? Bring your training: importing a CSV, TSV or Excel export' },
+      { src: loqqaLog, alt: 'Smart suggestions for every set: weight and reps suggested during a workout' },
+      { src: loqqaCompare, alt: 'See how you change: two progress photos side by side, 147 days apart' },
+      { src: loqqaSets, alt: 'No muscle left behind: 163 chest sets in 90 days, by exercise' },
+      { src: loqqaHistory, alt: 'Your PRs, always in view: top weight per session for one exercise' },
+      { src: loqqaKai, alt: 'Your AI coach is always with you: Kai answering how the bench press has improved' },
     ],
     tagline: 'A training log that tells you where you stand and what to do next — built in a month, with Claude Code.',
     sections: [

@@ -111,23 +111,21 @@ function HeroImage({ src, alt, height, style }) {
   );
 }
 
-/** App screenshots as a row of phone screens, in the hero's inset frame. On a
-    narrow screen the row scrolls sideways and snaps to each screen. */
+/** App Store screens (headline over a phone, transparent around it) as a row
+    straight on the page, no frame. The row scrolls sideways and snaps to each
+    screen; the next one peeks in at the edge so it reads as scrollable. */
 function ScreenStrip({ screens, ui, style }) {
   return (
-    <div style={{ ...PANEL, padding: ui.desktop ? 18 : 14, ...style }}>
-      <div style={{
-        display: 'flex', gap: ui.desktop ? 12 : 10, overflowX: 'auto', scrollSnapType: 'x mandatory',
-        scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch',
-      }}>
-        {screens.map((s, i) => (
-          <img key={i} src={s.src} alt={s.alt || ''} loading="lazy" style={{
-            flex: ui.desktop ? '1 1 0' : '0 0 46%', minWidth: 0, width: ui.desktop ? 0 : undefined,
-            aspectRatio: '1206 / 2622', objectFit: 'cover', display: 'block', scrollSnapAlign: 'start',
-            borderRadius: ui.desktop ? 18 : 16, border: '1px solid rgba(255,255,255,.1)', background: '#0a0a0a',
-          }} />
-        ))}
-      </div>
+    <div style={{
+      display: 'flex', gap: ui.desktop ? 8 : 6, overflowX: 'auto', scrollSnapType: 'x mandatory',
+      scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch', ...style,
+    }}>
+      {screens.map((s, i) => (
+        <img key={i} src={s.src} alt={s.alt || ''} loading={i < 4 ? 'eager' : 'lazy'} draggable={false} style={{
+          flex: ui.desktop ? '0 0 30%' : '0 0 46%', minWidth: 0,
+          aspectRatio: '430 / 932', display: 'block', scrollSnapAlign: 'start',
+        }} />
+      ))}
     </div>
   );
 }
