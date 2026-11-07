@@ -1,7 +1,7 @@
 # Portfolio Universe
 
 An interactive 3D portfolio. Each project is a destination in space — a particle
-galaxy, a black hole or a sun — and you warp between them along a curved flight
+galaxy, a black hole, a sun or a nebula — and you warp between them along a curved flight
 path. Opening a destination fades a reading page in over the scene.
 
 Built with Vite + React and a hand-written three.js renderer (instanced bokeh

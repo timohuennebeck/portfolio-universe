@@ -151,3 +151,49 @@ void main(){
   float edge=smoothstep(.55,.35,r); float comp=1./((1.+uSpeed*.6)*(1.+uSpeed*.185));
   gl_FragColor=vec4((1.-exp(-col*1.15))*edge*comp*uFade, disc*uFade);
 }`;
+
+// Nebula billboard (Loqqa): a stellar nursery. Domain-warped gas, neon where it is dense and blue at
+// the thin edges, dark dust lanes, and young stars with four-point diffraction spikes. All additive
+// (alpha 0) so the sky shows through; centred on the destination and faded out inside the billboard.
+export const NEBULA_FS = /* glsl */`
+uniform float uTime; uniform vec2 uHover; uniform float uHov; uniform float uSpeed; uniform float uFade; varying vec2 vUv;
+const vec3 NEON = vec3(.875, 1., .122);
+float hash(vec2 p){p=fract(p*vec2(123.34,456.21));p+=dot(p,p+45.32);return fract(p.x*p.y);}
+float noise(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);return mix(mix(hash(i),hash(i+vec2(1,0)),f.x),mix(hash(i+vec2(0,1)),hash(i+vec2(1,1)),f.x),f.y);}
+float fbm(vec2 p){float v=0.,a=.5;for(int i=0;i<5;i++){v+=a*noise(p);p=p*2.03+vec2(1.7,9.2);a*=.5;}return v;}
+void main(){
+  vec2 p0=vUv*1.75; float r=length(p0); float t=uTime*1.2;
+  // past the edge fade nothing shows; skip the noise stack for most of the billboard
+  if(r>.55){gl_FragColor=vec4(0.);return;}
+  // hover: like the galaxies' stars, the gas and its young stars part around the cursor with a slight
+  // swirl, and the gas lights up where the cursor passes (uHover follows the cursor on the billboard)
+  vec2 dm=p0-uHover*1.75; float md=length(dm); float inf=exp(-md*md/.018)*uHov;
+  float sw=inf*.9; vec2 p=p0-normalize(dm+1e-4)*inf*.07; p=p0+mat2(cos(sw),-sin(sw),sin(sw),cos(sw))*(p-p0+dm)-dm;
+  vec2 q=p*2.6;
+  vec2 w1=vec2(fbm(q+vec2(0.,t*.03)), fbm(q+vec2(5.2,1.3)-t*.02));
+  vec2 w2=vec2(fbm(q+3.5*w1+vec2(1.7,9.2)), fbm(q+3.5*w1+vec2(8.3,2.8)+t*.015));
+  float f=fbm(q+3.5*w2);
+  // a ragged outline: the falloff radius itself is noisy, so the cloud never reads as a disc
+  vec2 e=p*vec2(.85,1.2); float rn=length(e)*(.7+.75*fbm(p*2.2+w1*1.5));
+  float fall=exp(-rn*rn*10.);
+  // the warp alone puts the mass wherever the noise lands; a central term keeps it on the destination
+  float gas=(f*f*2.4+exp(-r*r*45.)*f*.9)*fall;
+  // dense gas glows neon, thin gas at the edges stays blue
+  vec3 col=mix(vec3(.05,.2,.42),NEON,smoothstep(.18,.62,gas))*gas;
+  col+=mix(NEON,vec3(1.),.5)*pow(gas,3.)*.45;
+  // the dust lanes drift on their own: a slow turn plus a slide, so they visibly cross the gas
+  float da=uTime*.025; vec2 dq=mat2(cos(da),-sin(da),sin(da),cos(da))*q*1.4+vec2(uTime*.05,-uTime*.03);
+  float dust=smoothstep(.5,.72,fbm(dq+w2*2.+3.));
+  col*=1.-dust*.82*fall;
+  for(int i=0;i<6;i++){
+    float fi=float(i);
+    vec2 c=(vec2(hash(vec2(fi,1.)),hash(vec2(fi,2.)))-.5)*vec2(.3,.22);
+    float b=(.4+hash(vec2(fi,3.))*.9)*(.8+.2*sin(uTime*(1.+fi)+fi*7.));
+    vec2 d=abs(p-c); float rs=length(p-c);
+    float spikes=(exp(-d.x*900.)*exp(-d.y*45.)+exp(-d.y*900.)*exp(-d.x*45.))*.6;
+    col+=mix(vec3(1.),NEON,.4)*(exp(-rs*rs/.000015)*3.+exp(-rs/.01)*.25+spikes)*b;
+  }
+  col+=mix(NEON,vec3(1.),.15)*inf*(gas*.8+.03);
+  float edge=smoothstep(.55,.35,r); float comp=1./((1.+uSpeed*.6)*(1.+uSpeed*.185));
+  gl_FragColor=vec4((1.-exp(-col*1.4))*edge*comp*uFade, 0.);
+}`;

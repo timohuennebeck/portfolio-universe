@@ -17,6 +17,9 @@
 //               icon is 'github', 'globe' (a live site) or 'external' (default). Overrides `github`.
 //   star      · render this destination as a sun instead of a particle galaxy
 //   blackhole · render this destination as a black hole instead of a particle galaxy
+//   nebula    · render this destination as a stellar nursery instead of a particle galaxy
+//   shape     · galaxy shape by name (src/space/shapes.js), so it doesn't change when the
+//               route order does; omitted, it falls back to the route index
 //   offset    · nudge from the computed route position, so a destination does not
 //               sit directly behind the previous one
 //
@@ -43,7 +46,22 @@
 //   { waffle: true, title, note?, items: [{label, value, pct, color?}] }
 //       · 100 squares coloured by share (fixed colours per item, not the tint)
 export const PROJECTS = [
-  { id: 'phase6', meta: ['Client work · Horizon Alpha', '2025', 'Frontend Developer', 'Team of 3', '5 weeks'], kind: 'Client work · 01', title: 'Phase6', tint: '#ffb066', links: [{ url: 'https://www.phase-6.de/', icon: 'globe' }], tagline: 'Building the analytics Phase6 didn\'t have, finding the one screen where teachers gave up, and shipping the fix that took registrations from 10% to 18%.',
+  { id: 'loqqa', meta: ['Independent project', '2026', 'Founder', 'Team of 1', '1 month'], kind: 'Independent · 03', title: 'Loqqa', tint: '#dfff1f', nebula: true, links: [{ url: 'https://apps.apple.com/app/id6826156839', label: 'App Store' }], tagline: 'A training log that tells you where you stand and what to do next — built in a month, with Claude Code.',
+    sections: [
+      { text: true, body: 'Loqqa started with a spreadsheet. I tracked my lifting in one — sets, reps and weights, week after week — and when I came back after a runner\'s knee I had months of it and [[no idea where I actually stood]]: which lifts were still moving, which muscles I\'d quietly stopped training, whether any of it had paid off. All the data was there. None of it answered anything.' },
+      { text: true, body: 'So Loqqa is the app I wanted then: [[a training log that knows everything you\'ve done and does something with it]]. It tells you what to do next — the sets, the reps, the weight for today. And it shows you where you stand: every set counted per muscle over the last weeks and months, so you can see where you\'re progressing and where you\'re falling behind. Your history comes with you in one import, from a spreadsheet or from Hevy or Strong; Kai, the coach, answers questions about it; and you can say your plan out loud instead of typing it.' },
+      // Figures from the app repo's main branch on 7 Nov 2026 (717 commits, 712 co-authored with
+      // Claude, ~50.6k lines of TypeScript under src/), written as floors so they stay true.
+      { numbers: true, body: 'From the first commit on 8 October, it took [[one month]], [[700+]] commits and [[50,000+]] lines of TypeScript in the app itself — and all but a handful of those commits were co-authored with Claude.' },
+      { text: true, body: 'Working with Claude Code, [[my job moved to deciding what to build and checking that it was right]]: designs to match screen by screen, review rounds before merging, and the coach\'s answers graded by an eval suite rather than by my gut. Blaulichtschule\'s rewrite took four of us two to three months by hand; this was one person and a month.' },
+      { list: true, lead: 'It\'s my third app of my own, and the first one built [[on what the other two taught me]].', items: [
+        'Unload taught me I can\'t fix what I can\'t see. Loqqa had [[its analytics events and error tracking in before launch]], with every purchase tied to the same PostHog person — so the first real users will show where the flows break, not just the ones who bother to write in.',
+        'Traqa taught me not to trust a model with numbers. Kai, the coach, [[never makes up a number]]: every logged value comes from a tool written in code, which it is told to quote rather than guess, and it only does the arithmetic on top — a difference, a percentage, a target date. Every plan the model writes is clamped to sensible sets, reps and effort before the app takes it, rest is set by the app rather than the model, and the coach is tested against an eval suite that flags numbers the tools didn\'t give it.',
+      ], after: 'Neither is clever. Both are lessons from Unload and Traqa, [[done from the start this time]].' },
+      { text: true, body: 'And it works in a basement gym. Every set is written to SQLite on the phone first and synced through PowerSync afterwards, and exercise images download ahead of time, so [[logging a set never waits on the gym\'s Wi-Fi]] — the respect for offline-first work that Traqa cost me, put to use.' },
+    ],
+    stack: [{ title: 'React Native' }, { title: 'Expo' }, { title: 'TypeScript' }, { title: 'Supabase' }, { title: 'PowerSync' }, { title: 'SQLite' }, { title: 'Drizzle' }, { title: 'PostHog' }, { title: 'RevenueCat' }, { title: 'OpenAI' }, { title: 'Claude Code' }] },
+  { id: 'phase6', shape: 'spiral', meta: ['Client work · Horizon Alpha', '2025', 'Frontend Developer', 'Team of 3', '5 weeks'], kind: 'Client work · 01', title: 'Phase6', tint: '#ffb066', links: [{ url: 'https://www.phase-6.de/', icon: 'globe' }], tagline: 'Building the analytics Phase6 didn\'t have, finding the one screen where teachers gave up, and shipping the fix that took registrations from 10% to 18%.',
     sections: [
       { text: true, body: 'Phase6 is a vocabulary-learning platform used by over a million students in Germany. Teachers can build a test through an anonymous flow that needs no account — but [[nobody could say how many people who started ever finished]]. There was no analytics on the flow at all.' },
       { text: true, body: 'Nobody asked me to fix this — I proposed introducing Amplitude after noticing we kept changing the anonymous flow on assumptions, not evidence. Over about two weeks I mapped every step from starting a test to saving it into a [[proper event taxonomy]], instrumented it, and built the funnels to see where the flow actually broke down.' },
@@ -86,7 +104,7 @@ export const PROJECTS = [
       ], after: 'Both gaps are the reason the first thing I pushed for later, on a product with a million users, was [[proper funnels and error tracking before anything else]].' },
     ],
     stack: [{ title: 'React Native' }, { title: 'Expo' }, { title: 'TypeScript' }, { title: 'Supabase' }, { title: 'Supabase Realtime' }, { title: 'PostgreSQL' }, { title: 'PostHog' }, { title: 'RevenueCat' }] },
-  { id: 'blaulichtschule', meta: ['Client work · Horizon Alpha', '2023', 'React Native Developer', 'Team of 4', '6 months'], kind: 'Client work · 02', title: 'Blaulichtschule', tint: '#5b8cff', tagline: 'Inheriting a codebase nobody could safely touch, and rewriting it from the ground up — no AI, just four people and React Native.',
+  { id: 'blaulichtschule', shape: 'filament', meta: ['Client work · Horizon Alpha', '2023', 'React Native Developer', 'Team of 4', '6 months'], kind: 'Client work · 02', title: 'Blaulichtschule', tint: '#5b8cff', tagline: 'Inheriting a codebase nobody could safely touch, and rewriting it from the ground up — no AI, just four people and React Native.',
     sections: [
       { text: true, body: 'Blaulichtschule is a criminal-law exam-prep app for German police trainees — real case studies, head-to-head quizzes, and content built with practicing lawyers. We took it over from the previous development team, and the codebase we inherited was close to unworkable: [[no reusable components, layout done with absolute positioning throughout]], no one able to say with confidence what a given screen actually depended on.' },
       { text: true, body: 'Adding anything new meant fighting the existing code more than writing new code, so as a team of four we [[rewrote the whole app in React Native with TypeScript from scratch]] — this was early 2023, before AI assistants were part of anyone\'s workflow, so it was four people and a lot of hours. We went [[screen by screen]]: rebuild one screen completely, get it to parity with the old one, and only then open its bug list — no half-migrated screens, and no time spent fixing code that was about to be deleted. The rewrite itself took about two to three months, inside six months on the project, and we worked directly with the client throughout in a genuinely agile setup: it was normal to ship a hotfix late on a Friday because that\'s when the client found the bug.' },
@@ -105,7 +123,7 @@ export const PROJECTS = [
       { quote: true, stars: 5, line: 'Navigation, load times and the learning areas are especially well thought out — they make the app a real experience.', source: 'App Store review, August 2023 — the month the rewrite was live. Translated from German.' },
     ],
     stack: [{ title: 'React Native' }, { title: 'TypeScript' }, { title: 'Bugsnag' }, { title: 'GitLab CI' }] },
-  { id: 'planetpop', meta: ['Client work · Horizon Alpha', '2023 — 2025', 'Frontend Developer', 'Team of 3', 'On and off over 2 years'], kind: 'Client work · 03', title: 'PlanetPop', tint: '#c8a4ff', links: [{ url: 'https://www.planetpop.com/', icon: 'globe' }], tagline: 'A learn-English-through-songs web app, built from an empty repo to paid subscriptions — infrastructure included.',
+  { id: 'planetpop', shape: 'edgeOn', meta: ['Client work · Horizon Alpha', '2023 — 2025', 'Frontend Developer', 'Team of 3', 'On and off over 2 years'], kind: 'Client work · 03', title: 'PlanetPop', tint: '#c8a4ff', links: [{ url: 'https://www.planetpop.com/', icon: 'globe' }], tagline: 'A learn-English-through-songs web app, built from an empty repo to paid subscriptions — infrastructure included.',
     sections: [
       { text: true, body: 'PlanetPop teaches children English through original songs and videos, and had already built an audience of over 100,000 subscribers on YouTube. The web app didn\'t exist yet: [[we built it from scratch in React Native Web]], and stood up everything behind it too — the Scaleway hosting and the MongoDB database it ran on.' },
       { list: true, lead: 'There was no fixed role on this one; the work was whatever needed shipping next, on and off over two years. What we delivered [[from a blank repository]]:', items: [
@@ -140,7 +158,7 @@ export const ABOUT = {
   github: 'https://github.com/timohuennebeck',
   cv: 'Timo-Huennebeck-CV.pdf', // served from public/, resolved against the site's base path
   intro: 'Frontend developer in Munich — three years of React, Next.js and Expo at Horizon Alpha, trainee to senior, lately on Phase6 and its million users. I came from marketing, so I would rather read a funnel than argue about a screen.',
-  detail: 'Two iOS apps of my own, one of them to 12,000 sign-ups. In the space view, the galaxies are client work; the black hole and the sun are mine.',
+  detail: 'Three iOS apps of my own, one of them to 12,000 sign-ups. In the space view, the galaxies are client work; the black hole, the sun and the nebula are mine.',
   email: 'jantimohuennebeck@gmail.com',
   linkedin: 'https://www.linkedin.com/in/timo-huennebeck',
   twitter: 'https://x.com/TimoHuennebeck',
