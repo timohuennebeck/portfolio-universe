@@ -1,7 +1,7 @@
 // The space scene: baked sky, travelling star field, far stars, and one particle galaxy per destination.
 import * as T from 'three';
 import { STAR_VS, STAR_FS, FAR_VS, FAR_FS, QUAD_VS, SKY_BAKE_FS, HOLE_VS, HOLE_FS, SUN_FS, NEBULA_FS } from './shaders.js';
-import { shapeFor } from './shapes.js';
+import { SHAPES, shapeFor } from './shapes.js';
 
 const BOX = 1100;                      // size of the wrapping star-field cube around the camera
 const GALAXY_VISIBLE = 1600;           // beyond this distance a galaxy is faded out by the shader, so skip drawing it
@@ -84,7 +84,7 @@ export function createSpace(renderer, { hq, PR, nodes }) {
       const glow = sprite('#ffb066', 0); glow.visible = false; scene.add(glow);
       return { mesh, glow, center, phase: Math.random() * 6.283, star: true, fx: sunMat, noHover: true };
     }
-    const shape = shapeFor(i), tilt = new T.Euler(rnd(-.5, .5), rnd(0, 6.283), rnd(-.4, .4));
+    const shape = SHAPES[n.shape] || shapeFor(i), tilt = new T.Euler(rnd(-.5, .5), rnd(0, 6.283), rnd(-.4, .4));
     const geo = instancedStars(hq ? 2600 : 1800, c => { const [p, rel] = shape(); p.applyEuler(tilt); const wm = Math.random();
       c.set(rel < 0.3 ? (wm < 0.6 ? '#ffd9b0' : '#ffffff') : (wm < 0.3 ? '#ffc9a0' : wm < 0.7 ? '#c6d8ff' : '#ffffff')); if (Math.random() < 0.3) c.lerp(tint, 0.45);
       const big = Math.random() < 0.1; c.multiplyScalar((big ? 0.55 : 0.3) + Math.random() * 0.45);

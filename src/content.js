@@ -18,6 +18,8 @@
 //   star      · render this destination as a sun instead of a particle galaxy
 //   blackhole · render this destination as a black hole instead of a particle galaxy
 //   nebula    · render this destination as a stellar nursery instead of a particle galaxy
+//   shape     · galaxy shape by name (src/space/shapes.js), so it doesn't change when the
+//               route order does; omitted, it falls back to the route index
 //   offset    · nudge from the computed route position, so a destination does not
 //               sit directly behind the previous one
 //
@@ -59,7 +61,7 @@ export const PROJECTS = [
       { text: true, body: 'And it works in a basement gym. Every set is written to SQLite on the phone first and synced through PowerSync afterwards, and exercise images download ahead of time, so [[logging a set never waits on the gym\'s Wi-Fi]] — the respect for offline-first work that Traqa cost me, put to use.' },
     ],
     stack: [{ title: 'React Native' }, { title: 'Expo' }, { title: 'TypeScript' }, { title: 'Supabase' }, { title: 'PowerSync' }, { title: 'SQLite' }, { title: 'Drizzle' }, { title: 'PostHog' }, { title: 'RevenueCat' }, { title: 'OpenAI' }, { title: 'Claude Code' }] },
-  { id: 'phase6', meta: ['Client work · Horizon Alpha', '2025', 'Frontend Developer', 'Team of 3', '5 weeks'], kind: 'Client work · 01', title: 'Phase6', tint: '#ffb066', links: [{ url: 'https://www.phase-6.de/', icon: 'globe' }], tagline: 'Building the analytics Phase6 didn\'t have, finding the one screen where teachers gave up, and shipping the fix that took registrations from 10% to 18%.',
+  { id: 'phase6', shape: 'spiral', meta: ['Client work · Horizon Alpha', '2025', 'Frontend Developer', 'Team of 3', '5 weeks'], kind: 'Client work · 01', title: 'Phase6', tint: '#ffb066', links: [{ url: 'https://www.phase-6.de/', icon: 'globe' }], tagline: 'Building the analytics Phase6 didn\'t have, finding the one screen where teachers gave up, and shipping the fix that took registrations from 10% to 18%.',
     sections: [
       { text: true, body: 'Phase6 is a vocabulary-learning platform used by over a million students in Germany. Teachers can build a test through an anonymous flow that needs no account — but [[nobody could say how many people who started ever finished]]. There was no analytics on the flow at all.' },
       { text: true, body: 'Nobody asked me to fix this — I proposed introducing Amplitude after noticing we kept changing the anonymous flow on assumptions, not evidence. Over about two weeks I mapped every step from starting a test to saving it into a [[proper event taxonomy]], instrumented it, and built the funnels to see where the flow actually broke down.' },
@@ -102,7 +104,7 @@ export const PROJECTS = [
       ], after: 'Both gaps are the reason the first thing I pushed for later, on a product with a million users, was [[proper funnels and error tracking before anything else]].' },
     ],
     stack: [{ title: 'React Native' }, { title: 'Expo' }, { title: 'TypeScript' }, { title: 'Supabase' }, { title: 'Supabase Realtime' }, { title: 'PostgreSQL' }, { title: 'PostHog' }, { title: 'RevenueCat' }] },
-  { id: 'blaulichtschule', meta: ['Client work · Horizon Alpha', '2023', 'React Native Developer', 'Team of 4', '6 months'], kind: 'Client work · 02', title: 'Blaulichtschule', tint: '#5b8cff', tagline: 'Inheriting a codebase nobody could safely touch, and rewriting it from the ground up — no AI, just four people and React Native.',
+  { id: 'blaulichtschule', shape: 'filament', meta: ['Client work · Horizon Alpha', '2023', 'React Native Developer', 'Team of 4', '6 months'], kind: 'Client work · 02', title: 'Blaulichtschule', tint: '#5b8cff', tagline: 'Inheriting a codebase nobody could safely touch, and rewriting it from the ground up — no AI, just four people and React Native.',
     sections: [
       { text: true, body: 'Blaulichtschule is a criminal-law exam-prep app for German police trainees — real case studies, head-to-head quizzes, and content built with practicing lawyers. We took it over from the previous development team, and the codebase we inherited was close to unworkable: [[no reusable components, layout done with absolute positioning throughout]], no one able to say with confidence what a given screen actually depended on.' },
       { text: true, body: 'Adding anything new meant fighting the existing code more than writing new code, so as a team of four we [[rewrote the whole app in React Native with TypeScript from scratch]] — this was early 2023, before AI assistants were part of anyone\'s workflow, so it was four people and a lot of hours. We went [[screen by screen]]: rebuild one screen completely, get it to parity with the old one, and only then open its bug list — no half-migrated screens, and no time spent fixing code that was about to be deleted. The rewrite itself took about two to three months, inside six months on the project, and we worked directly with the client throughout in a genuinely agile setup: it was normal to ship a hotfix late on a Friday because that\'s when the client found the bug.' },
@@ -121,7 +123,7 @@ export const PROJECTS = [
       { quote: true, stars: 5, line: 'Navigation, load times and the learning areas are especially well thought out — they make the app a real experience.', source: 'App Store review, August 2023 — the month the rewrite was live. Translated from German.' },
     ],
     stack: [{ title: 'React Native' }, { title: 'TypeScript' }, { title: 'Bugsnag' }, { title: 'GitLab CI' }] },
-  { id: 'planetpop', meta: ['Client work · Horizon Alpha', '2023 — 2025', 'Frontend Developer', 'Team of 3', 'On and off over 2 years'], kind: 'Client work · 03', title: 'PlanetPop', tint: '#c8a4ff', links: [{ url: 'https://www.planetpop.com/', icon: 'globe' }], tagline: 'A learn-English-through-songs web app, built from an empty repo to paid subscriptions — infrastructure included.',
+  { id: 'planetpop', shape: 'edgeOn', meta: ['Client work · Horizon Alpha', '2023 — 2025', 'Frontend Developer', 'Team of 3', 'On and off over 2 years'], kind: 'Client work · 03', title: 'PlanetPop', tint: '#c8a4ff', links: [{ url: 'https://www.planetpop.com/', icon: 'globe' }], tagline: 'A learn-English-through-songs web app, built from an empty repo to paid subscriptions — infrastructure included.',
     sections: [
       { text: true, body: 'PlanetPop teaches children English through original songs and videos, and had already built an audience of over 100,000 subscribers on YouTube. The web app didn\'t exist yet: [[we built it from scratch in React Native Web]], and stood up everything behind it too — the Scaleway hosting and the MongoDB database it ran on.' },
       { list: true, lead: 'There was no fixed role on this one; the work was whatever needed shipping next, on and off over two years. What we delivered [[from a blank repository]]:', items: [
