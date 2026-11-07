@@ -163,6 +163,8 @@ float noise(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);return mix(mix(ha
 float fbm(vec2 p){float v=0.,a=.5;for(int i=0;i<5;i++){v+=a*noise(p);p=p*2.03+vec2(1.7,9.2);a*=.5;}return v;}
 void main(){
   vec2 p0=vUv*1.75; float r=length(p0); float t=uTime*1.2;
+  // past the edge fade nothing shows; skip the noise stack for most of the billboard
+  if(r>.55){gl_FragColor=vec4(0.);return;}
   // hover: like the galaxies' stars, the gas and its young stars part around the cursor with a slight
   // swirl, and the gas lights up where the cursor passes (uHover follows the cursor on the billboard)
   vec2 dm=p0-uHover*1.75; float md=length(dm); float inf=exp(-md*md/.018)*uHov;
