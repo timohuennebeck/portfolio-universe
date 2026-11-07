@@ -43,6 +43,11 @@
 //   { waffle: true, title, note?, items: [{label, value, pct, color?}] }
 //       · 100 squares coloured by share (fixed colours per item, not the tint)
 export const PROJECTS = [
+  { id: 'loqqa', meta: ['Independent project', '2026', 'Founder', 'Team of 1', '1 month'], kind: 'Independent · 03', title: 'Loqqa', tint: '#dfff1f', nebula: true, links: [{ url: 'https://apps.apple.com/app/id6826156839', label: 'App Store' }], tagline: 'Loqqa',
+    sections: [
+      { text: true, body: 'Draft.' },
+    ],
+    stack: [{ title: 'React Native' }, { title: 'Expo' }, { title: 'TypeScript' }, { title: 'Supabase' }, { title: 'PowerSync' }, { title: 'SQLite' }, { title: 'Drizzle' }, { title: 'PostHog' }, { title: 'RevenueCat' }, { title: 'OpenAI' }, { title: 'Claude Code' }] },
   { id: 'phase6', meta: ['Client work · Horizon Alpha', '2025', 'Frontend Developer', 'Team of 3', '5 weeks'], kind: 'Client work · 01', title: 'Phase6', tint: '#ffb066', links: [{ url: 'https://www.phase-6.de/', icon: 'globe' }], tagline: 'Building the analytics Phase6 didn\'t have, finding the one screen where teachers gave up, and shipping the fix that took registrations from 10% to 18%.',
     sections: [
       { text: true, body: 'Phase6 is a vocabulary-learning platform used by over a million students in Germany. Teachers can build a test through an anonymous flow that needs no account — but [[nobody could say how many people who started ever finished]]. There was no analytics on the flow at all.' },

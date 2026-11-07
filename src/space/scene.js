@@ -1,6 +1,6 @@
 // The space scene: baked sky, travelling star field, far stars, and one particle galaxy per destination.
 import * as T from 'three';
-import { STAR_VS, STAR_FS, FAR_VS, FAR_FS, QUAD_VS, SKY_BAKE_FS, HOLE_VS, HOLE_FS, SUN_FS } from './shaders.js';
+import { STAR_VS, STAR_FS, FAR_VS, FAR_FS, QUAD_VS, SKY_BAKE_FS, HOLE_VS, HOLE_FS, SUN_FS, NEBULA_FS } from './shaders.js';
 import { shapeFor } from './shapes.js';
 
 const BOX = 1100;                      // size of the wrapping star-field cube around the camera
@@ -16,7 +16,7 @@ export const routePosition = i => { const a = i * 1.7; return [Math.sin(a) * 900
 export function arrival(nodes, i, fromPos) {
   const p = new T.Vector3(...nodes[i].pos), prev = fromPos ? fromPos.clone() : nodes[i - 1] ? new T.Vector3(...nodes[i - 1].pos) : p.clone().add(new T.Vector3(0, 0, 400));
   // billboards (hole, sun) are framed further back and aimed nearer their centre; up close the idle sway reads as shake
-  const fx = nodes[i].blackhole || nodes[i].star;
+  const fx = nodes[i].blackhole || nodes[i].star || nodes[i].nebula;
   const pos = p.clone().addScaledVector(prev.sub(p).normalize(), 84).add(new T.Vector3(0, 2, 0));
   const quat = new T.Quaternion().setFromRotationMatrix(new T.Matrix4().lookAt(pos, new T.Vector3(p.x, p.y - 17, p.z), UP));
   return { pos, quat };
@@ -65,12 +65,19 @@ export function createSpace(renderer, { hq, PR, nodes }) {
     blending: T.CustomBlending, blendSrc: T.OneFactor, blendDst: T.OneMinusSrcAlphaFactor, blendSrcAlpha: T.ZeroFactor, blendDstAlpha: T.OneFactor });
   const sunMat = new T.ShaderMaterial({ transparent: true, depthWrite: false, depthTest: false, vertexShader: HOLE_VS, fragmentShader: SUN_FS, uniforms: { uTime: shared.uTime, uSpeed: shared.uSpeed, uFade: { value: 0 }, uHov: { value: 0 }, uOrbit: { value: new T.Vector2() } },
     blending: T.CustomBlending, blendSrc: T.OneFactor, blendDst: T.OneMinusSrcAlphaFactor, blendSrcAlpha: T.ZeroFactor, blendDstAlpha: T.OneFactor });
+  const nebulaMat = new T.ShaderMaterial({ transparent: true, depthWrite: false, depthTest: false, vertexShader: HOLE_VS, fragmentShader: NEBULA_FS, uniforms: { uTime: shared.uTime, uSpeed: shared.uSpeed, uFade: { value: 0 }, uHov: { value: 0 } },
+    blending: T.CustomBlending, blendSrc: T.OneFactor, blendDst: T.OneMinusSrcAlphaFactor, blendSrcAlpha: T.ZeroFactor, blendDstAlpha: T.OneFactor });
   const galaxies = nodes.map((n, i) => {
     const center = new T.Vector3(...n.pos), tint = new T.Color(n.tint);
     if (n.blackhole) {
       const mesh = new T.Mesh(new T.PlaneGeometry(64, 64), holeMat); mesh.position.copy(center); mesh.renderOrder = -1; mesh.frustumCulled = false; scene.add(mesh);
       const glow = sprite('#6f9cff', 0); glow.visible = false; scene.add(glow);
       return { mesh, glow, center, phase: Math.random() * 6.283, hole: true, fx: holeMat };
+    }
+    if (n.nebula) {
+      const mesh = new T.Mesh(new T.PlaneGeometry(64, 64), nebulaMat); mesh.position.copy(center); mesh.renderOrder = -1; mesh.frustumCulled = false; scene.add(mesh);
+      const glow = sprite('#dfff1f', 0); glow.visible = false; scene.add(glow);
+      return { mesh, glow, center, phase: Math.random() * 6.283, nebula: true, fx: nebulaMat };
     }
     if (n.star) {
       const mesh = new T.Mesh(new T.PlaneGeometry(64, 64), sunMat); mesh.position.copy(center); mesh.renderOrder = -1; mesh.frustumCulled = false; scene.add(mesh);
