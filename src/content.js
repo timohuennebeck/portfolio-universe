@@ -1,4 +1,10 @@
 // Portfolio content. Edit copy here; the UI reads it.
+
+import loqqaTraining from './assets/loqqa/training.webp';
+import loqqaWorkout from './assets/loqqa/workout.webp';
+import loqqaHistory from './assets/loqqa/exercise-history.webp';
+import loqqaMuscles from './assets/loqqa/level-muscles.webp';
+import loqqaImport from './assets/loqqa/plan-import.webp';
 //
 // Per destination:
 //   id        · URL hash fragment, also the deep link
@@ -10,6 +16,8 @@
 //               under the title (Type / When / Role). Keep the order.
 //   media     · optional hero image path (e.g. '/projects/phase6/hero.png');
 //               omitted, the page opens straight into the copy
+//   screens   · optional app screenshots [{src, alt}], shown as a row of phone screens at the
+//               top of the page (it scrolls sideways on narrow screens); imported from src/assets
 //   stack     · chips under the tagline
 //   github    · optional; shortcut for a single GitHub link
 //   links     · optional; [{url, label?, icon?}] — one dashed text link each, for
@@ -46,7 +54,15 @@
 //   { waffle: true, title, note?, items: [{label, value, pct, color?}] }
 //       · 100 squares coloured by share (fixed colours per item, not the tint)
 export const PROJECTS = [
-  { id: 'loqqa', meta: ['Independent project', '2026', 'Founder', 'Team of 1', '1 month'], kind: 'Independent · 03', title: 'Loqqa', tint: '#dfff1f', nebula: true, links: [{ url: 'https://apps.apple.com/app/id6826156839', label: 'App Store' }], tagline: 'A training log that tells you where you stand and what to do next — built in a month, with Claude Code.',
+  { id: 'loqqa', meta: ['Independent project', '2026', 'Founder', 'Team of 1', '1 month'], kind: 'Independent · 03', title: 'Loqqa', tint: '#dfff1f', nebula: true, links: [{ url: 'https://apps.apple.com/app/id6826156839', label: 'App Store' }],
+    screens: [
+      { src: loqqaTraining, alt: 'The training week: this week\'s workouts, done and next' },
+      { src: loqqaWorkout, alt: 'A workout in progress, with suggested weight and reps for each set' },
+      { src: loqqaHistory, alt: 'An exercise\'s history: top weight per session over 90 days' },
+      { src: loqqaMuscles, alt: 'Every muscle group with its level and progress to the next one' },
+      { src: loqqaImport, alt: 'Importing a plan from a photo or a file' },
+    ],
+    tagline: 'A training log that tells you where you stand and what to do next — built in a month, with Claude Code.',
     sections: [
       { text: true, body: 'Loqqa started with a spreadsheet. I tracked my lifting in one — sets, reps and weights, week after week — and when I came back after a runner\'s knee I had months of it and [[no idea where I actually stood]]: which lifts were still moving, which muscles I\'d quietly stopped training, whether any of it had paid off. All the data was there. None of it answered anything.' },
       { text: true, body: 'So Loqqa is the app I wanted then: [[a training log that knows everything you\'ve done and does something with it]]. It tells you what to do next — the sets, the reps, the weight for today. And it shows you where you stand: every set counted per muscle over the last weeks and months, so you can see where you\'re progressing and where you\'re falling behind. Your history comes with you in one import, from a spreadsheet or from Hevy or Strong; Kai, the coach, answers questions about it; and you can say your plan out loud instead of typing it.' },
