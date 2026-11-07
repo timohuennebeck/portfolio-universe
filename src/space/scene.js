@@ -65,7 +65,7 @@ export function createSpace(renderer, { hq, PR, nodes }) {
     blending: T.CustomBlending, blendSrc: T.OneFactor, blendDst: T.OneMinusSrcAlphaFactor, blendSrcAlpha: T.ZeroFactor, blendDstAlpha: T.OneFactor });
   const sunMat = new T.ShaderMaterial({ transparent: true, depthWrite: false, depthTest: false, vertexShader: HOLE_VS, fragmentShader: SUN_FS, uniforms: { uTime: shared.uTime, uSpeed: shared.uSpeed, uFade: { value: 0 }, uHov: { value: 0 }, uOrbit: { value: new T.Vector2() } },
     blending: T.CustomBlending, blendSrc: T.OneFactor, blendDst: T.OneMinusSrcAlphaFactor, blendSrcAlpha: T.ZeroFactor, blendDstAlpha: T.OneFactor });
-  const nebulaMat = new T.ShaderMaterial({ transparent: true, depthWrite: false, depthTest: false, vertexShader: HOLE_VS, fragmentShader: NEBULA_FS, uniforms: { uTime: shared.uTime, uSpeed: shared.uSpeed, uFade: { value: 0 }, uHov: { value: 0 } },
+  const nebulaMat = new T.ShaderMaterial({ transparent: true, depthWrite: false, depthTest: false, vertexShader: HOLE_VS, fragmentShader: NEBULA_FS, uniforms: { uTime: shared.uTime, uSpeed: shared.uSpeed, uFade: { value: 0 }, uHover: { value: new T.Vector2() }, uHov: { value: 0 } },
     blending: T.CustomBlending, blendSrc: T.OneFactor, blendDst: T.OneMinusSrcAlphaFactor, blendSrcAlpha: T.ZeroFactor, blendDstAlpha: T.OneFactor });
   const galaxies = nodes.map((n, i) => {
     const center = new T.Vector3(...n.pos), tint = new T.Color(n.tint);
