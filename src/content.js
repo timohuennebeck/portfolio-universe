@@ -17,6 +17,7 @@
 //               icon is 'github', 'globe' (a live site) or 'external' (default). Overrides `github`.
 //   star      · render this destination as a sun instead of a particle galaxy
 //   blackhole · render this destination as a black hole instead of a particle galaxy
+//   nebula    · render this destination as a stellar nursery instead of a particle galaxy
 //   offset    · nudge from the computed route position, so a destination does not
 //               sit directly behind the previous one
 //
@@ -155,7 +156,7 @@ export const ABOUT = {
   github: 'https://github.com/timohuennebeck',
   cv: 'Timo-Huennebeck-CV.pdf', // served from public/, resolved against the site's base path
   intro: 'Frontend developer in Munich — three years of React, Next.js and Expo at Horizon Alpha, trainee to senior, lately on Phase6 and its million users. I came from marketing, so I would rather read a funnel than argue about a screen.',
-  detail: 'Two iOS apps of my own, one of them to 12,000 sign-ups. In the space view, the galaxies are client work; the black hole and the sun are mine.',
+  detail: 'Three iOS apps of my own, one of them to 12,000 sign-ups. In the space view, the galaxies are client work; the black hole, the sun and the nebula are mine.',
   email: 'jantimohuennebeck@gmail.com',
   linkedin: 'https://www.linkedin.com/in/timo-huennebeck',
   twitter: 'https://x.com/TimoHuennebeck',
