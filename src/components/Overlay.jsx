@@ -1,5 +1,5 @@
 import React, { forwardRef } from 'react';
-import { MONO } from './Hud.jsx';
+import { MONO, LangSwitch } from './Hud.jsx';
 import portraitSrc from '../assets/portrait.jpg';
 
 const RISE = 'gpRise .9s cubic-bezier(.2,.8,.2,1) both';
@@ -29,12 +29,14 @@ function Chips({ items, small = false }) {
 /** The header facts as labelled rows instead of a dot-separated line — the
     first row says whether this was client work or an independent project,
     which is the one thing a dot-separated line lets people skim past. */
-function Facts({ meta, tint }) {
+function Facts({ meta, tint, t }) {
   const [type, when, role, team, duration] = meta;
+  // English writes the team in lower case after the role ("Founder, just me"); German nouns keep theirs
+  const teamText = team && (/^team of 1$/i.test(team) ? t.justMe : t.lowerTeam ? team.toLowerCase() : team);
   const rows = [
-    ['Type', type, true],
-    ['When', [when, duration].filter(Boolean).join(' · ')],
-    ['Role', [role, team && (/^team of 1$/i.test(team) ? 'just me' : team.toLowerCase())].filter(Boolean).join(', ')],
+    [t.factType, type, true],
+    [t.factWhen, [when, duration].filter(Boolean).join(' · ')],
+    [t.factRole, [role, teamText].filter(Boolean).join(', ')],
   ].filter(r => r[1]);
   return (
     <div style={{ display: 'grid', gridTemplateColumns: 'auto 1fr', gap: '9px 24px', fontSize: 15, maxWidth: 520 }}>
@@ -81,12 +83,14 @@ const LINK_ICONS = {
     repo path ("timohuennebeck/running-app") rather than a generic label.
     `project.github` still works on its own; `project.links` can hold more
     (icon 'github', 'globe' for a live site, or 'external'). */
-function LinkRow({ project }) {
-  const links = project.links || (project.github ? [{ url: project.github, icon: 'github' }] : []);
-  if (!links.length) return null;
+function LinkRow({ project, t }) {
+  const all = project.links || (project.github ? [{ url: project.github, icon: 'github' }] : []);
+  const stores = all.filter(l => l.store), links = all.filter(l => !l.store);
+  if (!all.length) return null;
   const text = l => l.label || (l.icon === 'github' ? l.url.replace(/^https?:\/\/(www\.)?github\.com\//, '') : l.url.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, ''));
   return (
-    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px 26px', paddingTop: 2 }}>
+    <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '12px 26px', paddingTop: 2 }}>
+      {stores.map((l, i) => <StoreBadge key={`s${i}`} link={l} t={t} />)}
       {links.map((l, i) => (
         <a key={i} href={l.url} target="_blank" rel="noopener noreferrer" className="gp-dashed" style={{
           display: 'inline-flex', gap: 10, alignItems: 'center', fontSize: 15,
@@ -98,6 +102,48 @@ function LinkRow({ project }) {
       ))}
     </div>
   );
+}
+
+/** A store badge in the stores' own format (black, grey hairline, the logo,
+    a small line over the store's name), worded in the page's language. A link
+    with `soon` isn't live yet: the badge is dimmed, not a link, and carries a
+    "coming soon" tag. */
+const APPLE_LOGO = 'M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z';
+const STORE_LOGOS = {
+  apple: <svg width="22" height="26" viewBox="0 0 384 512" fill="#fff" aria-hidden="true"><path d={APPLE_LOGO} /></svg>,
+  google: (
+    <svg width="22" height="24" viewBox="0 0 22 24" aria-hidden="true">
+      <path d="M1 .8 12 12 1 23.2c-.4-.2-.6-.7-.6-1.2V2c0-.5.2-1 .6-1.2z" fill="#4285f4" />
+      <path d="M1 .8c.4-.2.9-.2 1.4.1l13.2 7.5L12 12z" fill="#34a853" />
+      <path d="M1 23.2 12 12l3.6 3.6-13.2 7.5c-.5.3-1 .3-1.4.1z" fill="#ea4335" />
+      <path d="m15.6 8.4 4.4 2.5c.9.5.9 1.7 0 2.2l-4.4 2.5L12 12z" fill="#fbbc04" />
+    </svg>
+  ),
+};
+function StoreBadge({ link, t }) {
+  const [top, name] = link.store === 'apple' ? [t.appStoreTop, 'App Store'] : [t.playTop, 'Google Play'];
+  const badge = {
+    display: 'inline-flex', alignItems: 'center', gap: 10, height: 48, padding: '0 18px 0 13px',
+    background: '#000', color: '#fff', border: '1px solid #a6a6a6', borderRadius: 10, textDecoration: 'none',
+  };
+  const inner = (
+    <>
+      {STORE_LOGOS[link.store]}
+      <span style={{ display: 'flex', flexDirection: 'column', gap: 2, lineHeight: 1 }}>
+        <span style={{ fontSize: link.store === 'google' ? 9.5 : 10.5, letterSpacing: link.store === 'google' ? '.06em' : '.01em', textTransform: link.store === 'google' ? 'uppercase' : 'none' }}>{top}</span>
+        <span style={{ fontSize: 20, fontWeight: 600, letterSpacing: '-.02em' }}>{name}</span>
+      </span>
+    </>
+  );
+  if (link.soon) {
+    return (
+      <span style={{ display: 'inline-flex', alignItems: 'center', gap: 12 }} aria-label={`${name} · ${t.soon}`}>
+        <span style={{ ...badge, opacity: .4, filter: 'grayscale(.6)' }} aria-hidden="true">{inner}</span>
+        <span style={{ fontFamily: MONO, fontSize: 11, letterSpacing: '.16em', textTransform: 'uppercase', color: 'rgba(238,242,248,.55)' }}>{t.soon}</span>
+      </span>
+    );
+  }
+  return <a href={link.url} target="_blank" rel="noopener noreferrer" className="gp-badge" aria-label={`${top} ${name}`} style={badge}>{inner}</a>;
 }
 
 /** The optional hero image, in the same inset frame as the portrait: a
@@ -113,19 +159,62 @@ function HeroImage({ src, alt, height, style }) {
 
 /** App Store screens (headline over a phone, transparent around it) as a row
     straight on the page, no frame. The row scrolls sideways and snaps to each
-    screen; the next one peeks in at the edge so it reads as scrollable. */
-function ScreenStrip({ screens, ui, style }) {
-  return (
-    <div style={{
-      display: 'flex', gap: ui.desktop ? 8 : 6, overflowX: 'auto', scrollSnapType: 'x mandatory',
-      scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch', ...style,
+    screen; the next one peeks in at the edge so it reads as scrollable. Each
+    side fades out while there is more to scroll that way, and on desktop a
+    chevron on that side steps one screen along. */
+const FADE = 72;
+function ScreenStrip({ screens, ui, t, style }) {
+  const row = React.useRef(null);
+  const [more, setMore] = React.useState({ left: false, right: false });
+  const measure = React.useCallback(() => {
+    const el = row.current;
+    if (!el) return;
+    const left = el.scrollLeft > 2, right = el.scrollLeft + el.clientWidth < el.scrollWidth - 2;
+    setMore(m => (m.left === left && m.right === right ? m : { left, right }));
+  }, []);
+  React.useEffect(() => {
+    measure();
+    const el = row.current, ro = new ResizeObserver(measure);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [measure]);
+  const step = dir => {
+    const el = row.current, first = el?.firstElementChild;
+    if (!first) return;
+    const gap = parseFloat(getComputedStyle(el).columnGap) || 0;
+    el.scrollBy({ left: dir * (first.getBoundingClientRect().width + gap), behavior: 'smooth' });
+  };
+  // the mask fades only the sides that have more to show, so the first and last screens sit flush
+  const mask = `linear-gradient(to right, ${more.left ? 'transparent' : '#000'} 0, #000 ${FADE}px, #000 calc(100% - ${FADE}px), ${more.right ? 'transparent' : '#000'} 100%)`;
+  const chevron = dir => (
+    <button type="button" aria-label={dir < 0 ? t.prevScreen : t.nextScreen} onClick={() => step(dir)} className="gp-quiet" style={{
+      position: 'absolute', top: '50%', [dir < 0 ? 'left' : 'right']: 6, transform: 'translateY(-50%)',
+      width: 44, height: 44, borderRadius: 999, display: 'grid', placeItems: 'center', cursor: 'pointer',
+      border: '1px solid rgba(255,255,255,.16)', background: 'rgba(2,4,10,.6)', color: '#eef2f8',
+      backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)',
+      opacity: (dir < 0 ? more.left : more.right) ? 1 : 0,
+      pointerEvents: (dir < 0 ? more.left : more.right) ? 'auto' : 'none', transition: 'opacity .3s',
     }}>
-      {screens.map((s, i) => (
-        <img key={i} src={s.src} alt={s.alt || ''} loading={i < 4 ? 'eager' : 'lazy'} draggable={false} style={{
-          flex: ui.desktop ? '0 0 30%' : '0 0 46%', minWidth: 0,
-          aspectRatio: '430 / 932', display: 'block', scrollSnapAlign: 'start',
-        }} />
-      ))}
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <path d={dir < 0 ? 'M15 5l-7 7 7 7' : 'M9 5l7 7-7 7'} />
+      </svg>
+    </button>
+  );
+  return (
+    <div style={{ position: 'relative', ...style }}>
+      <div ref={row} onScroll={measure} style={{
+        display: 'flex', gap: ui.desktop ? 8 : 6, overflowX: 'auto', scrollSnapType: 'x mandatory',
+        scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch', maskImage: mask, WebkitMaskImage: mask,
+      }}>
+        {screens.map((s, i) => (
+          <img key={i} src={s.src} alt={s.alt || ''} loading={i < 4 ? 'eager' : 'lazy'} draggable={false} onLoad={i === 0 ? measure : undefined} style={{
+            flex: ui.desktop ? '0 0 30%' : '0 0 46%', minWidth: 0,
+            aspectRatio: '430 / 932', display: 'block', scrollSnapAlign: 'start',
+          }} />
+        ))}
+      </div>
+      {ui.desktop && chevron(-1)}
+      {ui.desktop && chevron(1)}
     </div>
   );
 }
@@ -263,16 +352,16 @@ function Stars({ value, tint, size = 22 }) {
 
 /** Rating as a big number + stars, with the 5→1 distribution beside it —
     the App Store's own framing, so readers decode it instantly. */
-function RatingCard({ s, tint, ui }) {
+function RatingCard({ s, tint, ui, t }) {
   const dist = s.distribution || [];
   return (
     <ChartCard title={s.title} note={s.note}>
       <div style={{ display: 'grid', gridTemplateColumns: ui.desktop ? '1fr 1.4fr' : '1fr', gap: ui.desktop ? 48 : 28, alignItems: 'center' }}>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-          <div style={{ fontFamily: MONO, fontSize: 11, letterSpacing: '.2em', textTransform: 'uppercase', color: MUTED }}>{s.label || 'App Store rating'}</div>
+          <div style={{ fontFamily: MONO, fontSize: 11, letterSpacing: '.2em', textTransform: 'uppercase', color: MUTED }}>{s.label || t.ratingLabel}</div>
           <div style={{ display: 'flex', alignItems: 'baseline', gap: 12 }}>
-            <div style={{ fontSize: 64, fontWeight: 500, letterSpacing: '-.04em', lineHeight: 1 }}>{s.value}</div>
-            <div style={{ fontSize: 17, color: 'rgba(238,242,248,.62)' }}>out of {s.outOf || 5}</div>
+            <div style={{ fontSize: 64, fontWeight: 500, letterSpacing: '-.04em', lineHeight: 1 }}>{s.value.toLocaleString(t.locale)}</div>
+            <div style={{ fontSize: 17, color: 'rgba(238,242,248,.62)' }}>{t.outOf} {s.outOf || 5}</div>
           </div>
           <Stars value={s.value} tint={tint} />
           {s.caption && <div style={{ fontSize: 14, color: 'rgba(238,242,248,.62)' }}>{s.caption}</div>}
@@ -317,7 +406,7 @@ const HATCH = 'repeating-linear-gradient(135deg, rgba(255,255,255,.14) 0 2px, tr
 /** One funnel: every step as a column whose height is the share still in the
     flow, the hatched block above it what the previous step lost. The last
     step is lit in the tint. */
-function FunnelColumns({ steps, tint, ui, independent = false }) {
+function FunnelColumns({ steps, tint, ui, locale, independent = false }) {
   const gap = ui.desktop ? 14 : 8;
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 16, minWidth: 0 }}>
@@ -340,7 +429,7 @@ function FunnelColumns({ steps, tint, ui, independent = false }) {
                 color: last ? '#02040a' : '#eef2f8', transition: 'flex-basis .4s',
               }}>
                 <div style={{ fontSize: ui.desktop ? 19 : 15, fontWeight: 600, letterSpacing: '-.01em' }}>{Math.round(st.pct)}%</div>
-                {st.count != null && <div style={{ fontFamily: MONO, fontSize: 12, marginTop: 4, opacity: last ? .7 : .55 }}>{st.count.toLocaleString('en-US')}</div>}
+                {st.count != null && <div style={{ fontFamily: MONO, fontSize: 12, marginTop: 4, opacity: last ? .7 : .55 }}>{st.count.toLocaleString(locale)}</div>}
               </div>
             </div>
           );
@@ -357,7 +446,7 @@ function FunnelColumns({ steps, tint, ui, independent = false }) {
 
 /** A funnel section: one funnel, with optional `tabs` to switch between
     several datasets (before / after). */
-function FunnelCard({ s, tint, ui }) {
+function FunnelCard({ s, tint, ui, t }) {
   const tabs = s.tabs || [{ label: '', steps: s.steps || [] }];
   const [active, setActive] = React.useState(0);
   const legend = { display: 'flex', alignItems: 'center', gap: 8 };
@@ -365,10 +454,62 @@ function FunnelCard({ s, tint, ui }) {
   return (
     <ChartCard title={s.title} note={s.note}>
       <TabRow tabs={tabs} active={active} onChange={setActive} />
-      <FunnelColumns steps={(tabs[active] || tabs[0]).steps} tint={tint} ui={ui} independent={!!s.independent} />
+      <FunnelColumns steps={(tabs[active] || tabs[0]).steps} tint={tint} ui={ui} locale={t.locale} independent={!!s.independent} />
       <div style={{ display: 'flex', gap: 22, fontSize: 13, color: 'rgba(238,242,248,.7)', alignItems: 'center', flexWrap: 'wrap' }}>
-        <span style={legend}><span style={{ ...swatch, background: tint }} />{s.reachedLabel || 'Reached this step'}</span>
-        <span style={legend}><span style={{ ...swatch, background: 'repeating-linear-gradient(135deg, rgba(255,255,255,.4) 0 1.5px, transparent 1.5px 4.5px)' }} />{s.droppedLabel || 'Dropped off'}</span>
+        <span style={legend}><span style={{ ...swatch, background: tint }} />{s.reachedLabel || t.reached}</span>
+        <span style={legend}><span style={{ ...swatch, background: 'repeating-linear-gradient(135deg, rgba(255,255,255,.4) 0 1.5px, transparent 1.5px 4.5px)' }} />{s.droppedLabel || t.dropped}</span>
+      </div>
+    </ChartCard>
+  );
+}
+
+/** A count per day as thin columns — commits over a month. A day with nothing
+    stays a dashed baseline, so a pause reads as a pause; days at or above `hot`
+    light up in the tint; `marks` pin a short label over a day. Dates arrive as
+    one ISO start day and are written in the page's language. Hover (or tap) a
+    column for its day and count. */
+function BarsCard({ s, tint, ui, t }) {
+  const counts = s.counts || [], max = Math.max(1, ...counts);
+  const [tip, setTip] = React.useState(null);
+  const fmt = new Intl.DateTimeFormat(t.locale, { day: 'numeric', month: 'short' });
+  const day = i => { const d = new Date(`${s.from}T12:00:00`); d.setDate(d.getDate() + i); return fmt.format(d); };
+  const unit = n => (s.unit ? s.unit[n === 1 ? 0 : 1] : '');
+  const at = i => `${(i + .5) / counts.length * 100}%`;
+  const top = i => `${counts[i] / max * 100}%`;
+  const label = { position: 'absolute', transform: 'translateX(-50%)', fontFamily: MONO, fontSize: 12, whiteSpace: 'nowrap', pointerEvents: 'none' };
+  return (
+    <ChartCard title={s.title} note={s.note}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+        <div role="img" aria-label={s.title} onMouseLeave={() => setTip(null)} style={{
+          position: 'relative', height: ui.desktop ? 240 : 180, marginTop: 30,
+          display: 'flex', alignItems: 'flex-end', gap: ui.desktop ? 4 : 2,
+        }}>
+          {counts.map((n, i) => {
+            const hot = s.hot != null && n >= s.hot;
+            return (
+              <div key={i} onMouseEnter={() => setTip(i)} onPointerDown={() => setTip(i)} style={{ flex: 1, minWidth: 0, height: '100%', display: 'flex', alignItems: 'flex-end' }}>
+                <div style={{
+                  width: '100%', height: n ? `max(2px, ${n / max * 100}%)` : 0, borderRadius: '3px 3px 1px 1px',
+                  background: tip === i ? '#fff' : hot ? tint : 'rgba(255,255,255,.14)',
+                  boxShadow: hot ? `0 0 18px ${tint}55` : 'none', transition: 'background .2s',
+                  borderBottom: n ? 'none' : '1px dashed rgba(255,255,255,.25)',
+                }} />
+              </div>
+            );
+          })}
+          {(s.marks || []).map(m => tip === null && (
+            <div key={m.at} style={{ ...label, left: at(m.at), bottom: `calc(${top(m.at)} + 8px)`, color: 'rgba(238,242,248,.62)' }}>{m.label}</div>
+          ))}
+          {tip !== null && (
+            <div style={{
+              ...label, left: at(tip), bottom: `calc(${top(tip)} + 10px)`, color: '#eef2f8',
+              background: 'rgba(6,10,20,.92)', border: '1px solid rgba(255,255,255,.14)', padding: '4px 9px', borderRadius: 6,
+            }}>{day(tip)} · {counts[tip]} {unit(counts[tip])}</div>
+          )}
+        </div>
+        <div style={{ display: 'flex', justifyContent: 'space-between', fontFamily: MONO, fontSize: 12, color: MUTED }}>
+          <span>{day(0)}</span><span>{day(counts.length - 1)}</span>
+        </div>
       </div>
     </ChartCard>
   );
@@ -511,17 +652,17 @@ function ProjectPage({ ui, t, project, nextTitle, onClose, onNext }) {
           margin: 0, fontSize: ui.h1, fontWeight: 500, letterSpacing: '-.035em',
           lineHeight: .98, textWrap: 'balance',
         }}>{project.title}</h1>
-        <Facts meta={meta} tint={project.tint} />
+        <Facts meta={meta} tint={project.tint} t={t} />
         <div style={{
           fontSize: ui.lead, lineHeight: 1.45, color: 'rgba(238,242,248,.86)',
           textWrap: 'pretty', maxWidth: 760,
         }}>{project.tagline}</div>
         {project.stack && <Chips items={project.stack} small />}
-        <LinkRow project={project} />
+        <LinkRow project={project} t={t} />
       </div>
 
       {project.screens?.length > 0 && (
-        <ScreenStrip screens={project.screens} ui={ui} style={{ animation: riseAfter('.15s') }} />
+        <ScreenStrip screens={project.screens} ui={ui} t={t} style={{ animation: riseAfter('.15s') }} />
       )}
 
       {isImagePath(project.media) && (
@@ -535,10 +676,11 @@ function ProjectPage({ ui, t, project, nextTitle, onClose, onNext }) {
           {s.text === true && <div style={para(ui)}>{rich(s.body, project.tint)}</div>}
           {s.list === true && <NumberedList s={s} tint={project.tint} ui={ui} />}
           {s.numbers === true && <NumbersCard s={s} ui={ui} />}
-          {s.funnel === true && <FunnelCard s={s} tint={project.tint} ui={ui} />}
-          {s.rating === true && <RatingCard s={s} tint={project.tint} ui={ui} />}
+          {s.funnel === true && <FunnelCard s={s} tint={project.tint} ui={ui} t={t} />}
+          {s.rating === true && <RatingCard s={s} tint={project.tint} ui={ui} t={t} />}
           {s.quote === true && <QuoteCard s={s} tint={project.tint} ui={ui} />}
           {s.waffle === true && <WaffleCard s={s} ui={ui} />}
+          {s.bars === true && <BarsCard s={s} tint={project.tint} ui={ui} t={t} />}
         </div>
       ))}
 
@@ -562,7 +704,7 @@ function ProjectPage({ ui, t, project, nextTitle, onClose, onNext }) {
 /** The full-screen reading surface. It stays mounted so it can cross-fade, but
     its contents unmount when closed so the entry animations replay each time. */
 const Overlay = forwardRef(function Overlay(props, ref) {
-  const { ui, t, aboutOpen, pageOpen, about, project, nextTitle, onClose, onNext } = props;
+  const { ui, t, lang, onLang, aboutOpen, pageOpen, about, project, nextTitle, onClose, onNext } = props;
   const open = aboutOpen || pageOpen;
   return (
     <div
@@ -585,6 +727,7 @@ const Overlay = forwardRef(function Overlay(props, ref) {
             position: 'sticky', top: 0, width: '100%', display: 'flex',
             justifyContent: 'flex-end', alignItems: 'center', padding: ui.stickyPad, zIndex: 1,
           }}>
+            <LangSwitch lang={lang} onChange={onLang} t={t} style={{ marginRight: 14, color: 'rgba(238,242,248,.6)' }} />
             <button type="button" onClick={onClose} className="gp-glass" style={{
               background: 'rgba(6,10,20,.85)', border: '1px solid rgba(255,255,255,.14)',
               color: '#eef2f8', padding: '10px 18px', borderRadius: 999, cursor: 'pointer',

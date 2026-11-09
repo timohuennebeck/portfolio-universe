@@ -152,12 +152,13 @@ void main(){
   gl_FragColor=vec4((1.-exp(-col*1.15))*edge*comp*uFade, disc*uFade);
 }`;
 
-// Nebula billboard (Loqqa): a stellar nursery. Domain-warped gas, neon where it is dense and blue at
-// the thin edges, dark dust lanes, and young stars with four-point diffraction spikes. All additive
+// Nebula billboard (PlanetPop): a stellar nursery. Domain-warped gas, in the destination's tint where it is
+// dense and blue at the thin edges, dark dust lanes, and young stars with four-point diffraction spikes. All additive
 // (alpha 0) so the sky shows through; centred on the destination and faded out inside the billboard.
 export const NEBULA_FS = /* glsl */`
 uniform float uTime; uniform vec2 uHover; uniform float uHov; uniform float uSpeed; uniform float uFade; varying vec2 vUv;
-const vec3 NEON = vec3(.875, 1., .122);
+uniform vec3 uTint; // the destination's tint, as its raw hex values
+#define NEON uTint
 float hash(vec2 p){p=fract(p*vec2(123.34,456.21));p+=dot(p,p+45.32);return fract(p.x*p.y);}
 float noise(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);return mix(mix(hash(i),hash(i+vec2(1,0)),f.x),mix(hash(i+vec2(0,1)),hash(i+vec2(1,1)),f.x),f.y);}
 float fbm(vec2 p){float v=0.,a=.5;for(int i=0;i<5;i++){v+=a*noise(p);p=p*2.03+vec2(1.7,9.2);a*=.5;}return v;}

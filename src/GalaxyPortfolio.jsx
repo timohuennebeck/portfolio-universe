@@ -1,5 +1,5 @@
 import React from 'react';
-import { PROJECTS, ABOUT, UI_STRINGS } from './content.js';
+import { PROJECTS, ABOUT, localize } from './content.js';
 import { AMBIENCE, QUALITY, BLOOM } from './config.js';
 import { layoutFor } from './layout.js';
 import { Hints, NavDock, AboutButton, SoundButton, Identity } from './components/Hud.jsx';
@@ -9,6 +9,13 @@ import Overlay from './components/Overlay.jsx';
 
 const smooth01 = x => { x = Math.max(0, Math.min(1, x)); return x * x * (3 - 2 * x); };
 const easeWarp = t => (t < 0.5 ? 8 * t * t * t * t : 1 - Math.pow(-2 * t + 2, 4) / 2);
+
+// The reader's language: what they picked last time, else German for a German browser.
+const LANG_KEY = 'gp-lang';
+const startLang = () => {
+  try { const saved = localStorage.getItem(LANG_KEY); if (saved === 'en' || saved === 'de') return saved; } catch {}
+  return /^de\b/i.test(navigator.language || '') ? 'de' : 'en';
+};
 
 /**
  * The whole experience: a WebGL scene plus the HUD that floats over it.
@@ -29,6 +36,13 @@ export default class GalaxyPortfolio extends React.Component {
     soundOn: !(matchMedia('(pointer:coarse)').matches || innerWidth < 720),
     ready: false,
     mobile: matchMedia('(max-width: 720px)').matches,
+    lang: startLang(),
+  };
+
+  setLang = lang => {
+    try { localStorage.setItem(LANG_KEY, lang); } catch {}
+    document.documentElement.lang = lang;
+    this.setState({ lang });
   };
 
   canvasRef = React.createRef();
@@ -165,6 +179,7 @@ export default class GalaxyPortfolio extends React.Component {
     // The mount is async; a mount/unmount/mount cycle must not leave the first
     // loop alive.
     const gen = (this.gen = (this.gen || 0) + 1);
+    document.documentElement.lang = this.state.lang;
     const [T, { createSpace, routePosition, arrival }, { createPost }] = await Promise.all([
       import('three'),
       import('./space/scene.js'),
@@ -456,13 +471,17 @@ export default class GalaxyPortfolio extends React.Component {
   }
 
   render() {
-    const { idx, cardIdx, pageOpen, aboutOpen, soundOn, ready, mobile } = this.state;
-    const N = this.nodes.length;
+    const { idx, cardIdx, pageOpen, aboutOpen, soundOn, ready, mobile, lang } = this.state;
+    // words in the chosen language, laid over the nodes (which also carry their positions)
+    const L = localize(lang);
+    const nodes = this.nodes.map((n, i) => ({ ...n, ...L.projects[i] }));
+    const about = { ...this.about, ...L.about };
+    const N = nodes.length;
     const overlayOpen = pageOpen || aboutOpen;
     const ui = layoutFor(mobile);
-    const t = UI_STRINGS;
-    const card = this.nodes[cardIdx] || {};
-    const active = this.nodes[idx] || {};
+    const t = L.ui;
+    const card = nodes[cardIdx] || {};
+    const active = nodes[idx] || {};
     // The HUD fades out as one while a page is open, and stops taking clicks.
     const hud = { opacity: overlayOpen ? 0 : 1, pointerEvents: overlayOpen ? 'none' : 'auto' };
 
@@ -495,7 +514,7 @@ export default class GalaxyPortfolio extends React.Component {
 
         {ready && (
           <>
-            <Hints ui={ui} t={t} opacity={hud.opacity} />
+            <Hints ui={ui} t={t} opacity={hud.opacity} lang={lang} onLang={this.setLang} />
 
             <ArrivalCard
               ref={this.labelRef}
@@ -507,14 +526,14 @@ export default class GalaxyPortfolio extends React.Component {
 
             <NavDock
               ui={ui}
-              nodes={this.nodes}
+              nodes={nodes}
               idx={idx}
               onGo={this.jumpTo}
               {...hud}
             />
 
             {ui.desktop ? (
-              <Identity ui={ui} about={this.about} onClick={() => this.openOverlay('aboutOpen')} {...hud} />
+              <Identity ui={ui} about={about} onClick={() => this.openOverlay('aboutOpen')} {...hud} />
             ) : (
               <AboutButton
                 ui={ui}
@@ -542,11 +561,13 @@ export default class GalaxyPortfolio extends React.Component {
           ref={this.pageRef}
           ui={ui}
           t={t}
+          lang={lang}
+          onLang={this.setLang}
           aboutOpen={aboutOpen}
           pageOpen={pageOpen}
-          about={this.about}
+          about={about}
           project={active}
-          nextTitle={N ? this.nodes[(idx + 1) % N].title : ''}
+          nextTitle={N ? nodes[(idx + 1) % N].title : ''}
           onClose={this.closeOverlay}
           onNext={() => this.jumpTo((idx + 1) % N)}
         />

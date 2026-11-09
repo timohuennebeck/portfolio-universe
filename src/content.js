@@ -1,4 +1,8 @@
 // Portfolio content. Edit copy here; the UI reads it.
+// German lives in content.de.js, keyed by project id.
+
+import { DE } from './content.de.js';
+import { LOQQA_FROM, LOQQA_COMMITS } from './commits.js';
 
 import loqqaPlan from './assets/loqqa/plan.webp';
 import loqqaImport from './assets/loqqa/import.webp';
@@ -33,6 +37,9 @@ import loqqaKai from './assets/loqqa/kai.webp';
 //   offset    · nudge from the computed route position, so a destination does not
 //               sit directly behind the previous one
 //
+//   links[] may also hold store badges: { store: 'apple' | 'google', url?, soon? } — `soon`
+//   shows the badge dimmed with a "coming soon" tag and no link
+//
 // sections[] entries — each declares exactly one type with `type: true`. In any
 // copy, [[double brackets]] highlight a phrase in the project's tint. Keep text
 // between two charts; never put one chart directly after another (a list
@@ -55,8 +62,11 @@ import loqqaKai from './assets/loqqa/kai.webp';
 //         paragraph, never directly under the rating
 //   { waffle: true, title, note?, items: [{label, value, pct, color?}] }
 //       · 100 squares coloured by share (fixed colours per item, not the tint)
+//   { bars: true, title, note?, from, counts: [..], hot?, unit?: [one, many], marks?: [{at, label}] }
+//       · a count per day from the ISO date `from`; columns at or above `hot` take the tint,
+//         `marks` label a day by its index
 export const PROJECTS = [
-  { id: 'loqqa', meta: ['Independent project', '2026', 'Founder', 'Team of 1', '1 month'], kind: 'Independent · 03', title: 'Loqqa', tint: '#dfff1f', nebula: true, links: [{ url: 'https://apps.apple.com/app/id6826156839', label: 'App Store' }],
+  { id: 'loqqa', meta: ['Independent project', '2026', 'Founder', 'Team of 1', '1 month'], kind: 'Independent · 03', title: 'Loqqa', tint: '#dfff1f', star: true, links: [{ store: 'apple', url: 'https://apps.apple.com/app/id6826156839' }, { store: 'google', soon: true }],
     screens: [ // the App Store screens, English, in their store order
       { src: loqqaPlan, alt: 'A plan tailored to you: the training week with the current Push Pull Legs block' },
       { src: loqqaImport, alt: 'Switching apps? Bring your training: importing a CSV, TSV or Excel export' },
@@ -73,12 +83,13 @@ export const PROJECTS = [
       // Figures from the app repo's main branch on 7 Nov 2026 (717 commits, 712 co-authored with
       // Claude, ~50.6k lines of TypeScript under src/), written as floors so they stay true.
       { numbers: true, body: 'From the first commit on 8 October, it took [[one month]], [[700+]] commits and [[50,000+]] lines of TypeScript in the app itself — and all but a handful of those commits were co-authored with Claude.' },
+      { bars: true, title: 'One month, commit by commit', note: 'Every commit to the app, by day — from the first one on 8 October to launch week.', from: LOQQA_FROM, counts: LOQQA_COMMITS, hot: 60, unit: ['commit', 'commits'], marks: [{ at: 13, label: '3 days off' }, { at: 28, label: '87 in a day' }] },
       { text: true, body: 'Working with Claude Code, [[my job moved to deciding what to build and checking that it was right]]: designs to match screen by screen, review rounds before merging, and the coach\'s answers graded by an eval suite rather than by my gut. Blaulichtschule\'s rewrite took four of us two to three months by hand; this was one person and a month.' },
       { list: true, lead: 'It\'s my third app of my own, and the first one built [[on what the other two taught me]].', items: [
         'Unload taught me I can\'t fix what I can\'t see. Loqqa had [[its analytics events and error tracking in before launch]], with every purchase tied to the same PostHog person — so the first real users will show where the flows break, not just the ones who bother to write in.',
         'Traqa taught me not to trust a model with numbers. Kai, the coach, [[never makes up a number]]: every logged value comes from a tool written in code, which it is told to quote rather than guess, and it only does the arithmetic on top — a difference, a percentage, a target date. Every plan the model writes is clamped to sensible sets, reps and effort before the app takes it, rest is set by the app rather than the model, and the coach is tested against an eval suite that flags numbers the tools didn\'t give it.',
       ], after: 'Neither is clever. Both are lessons from Unload and Traqa, [[done from the start this time]].' },
-      { text: true, body: 'And it works in a basement gym. Every set is written to SQLite on the phone first and synced through PowerSync afterwards, and exercise images download ahead of time, so [[logging a set never waits on the gym\'s Wi-Fi]] — the respect for offline-first work that Traqa cost me, put to use.' },
+      { text: true, body: 'Loqqa is [[offline-first]]. Every set is saved on the phone the moment you log it and synced once there\'s a connection, and the exercise images are already downloaded — so a gym with no signal changes nothing. Under the hood, that\'s SQLite on the device and PowerSync to Supabase.' },
     ],
     stack: [{ title: 'React Native' }, { title: 'Expo' }, { title: 'TypeScript' }, { title: 'Supabase' }, { title: 'PowerSync' }, { title: 'SQLite' }, { title: 'Drizzle' }, { title: 'PostHog' }, { title: 'RevenueCat' }, { title: 'OpenAI' }, { title: 'Claude Code' }] },
   { id: 'phase6', shape: 'spiral', meta: ['Client work · Horizon Alpha', '2025', 'Frontend Developer', 'Team of 3', '5 weeks'], kind: 'Client work · 01', title: 'Phase6', tint: '#ffb066', links: [{ url: 'https://www.phase-6.de/', icon: 'globe' }], tagline: 'Building the analytics Phase6 didn\'t have, finding the one screen where teachers gave up, and shipping the fix that took registrations from 10% to 18%.',
@@ -143,7 +154,7 @@ export const PROJECTS = [
       { quote: true, stars: 5, line: 'Navigation, load times and the learning areas are especially well thought out — they make the app a real experience.', source: 'App Store review, August 2023 — the month the rewrite was live. Translated from German.' },
     ],
     stack: [{ title: 'React Native' }, { title: 'TypeScript' }, { title: 'Bugsnag' }, { title: 'GitLab CI' }] },
-  { id: 'planetpop', shape: 'edgeOn', meta: ['Client work · Horizon Alpha', '2023 — 2025', 'Frontend Developer', 'Team of 3', 'On and off over 2 years'], kind: 'Client work · 03', title: 'PlanetPop', tint: '#c8a4ff', links: [{ url: 'https://www.planetpop.com/', icon: 'globe' }], tagline: 'A learn-English-through-songs web app, built from an empty repo to paid subscriptions — infrastructure included.',
+  { id: 'planetpop', shape: 'edgeOn', meta: ['Client work · Horizon Alpha', '2023 — 2025', 'Frontend Developer', 'Team of 3', 'On and off over 2 years'], kind: 'Client work · 03', title: 'PlanetPop', tint: '#c8a4ff', nebula: true, links: [{ url: 'https://www.planetpop.com/', icon: 'globe' }], tagline: 'A learn-English-through-songs web app, built from an empty repo to paid subscriptions — infrastructure included.',
     sections: [
       { text: true, body: 'PlanetPop teaches children English through original songs and videos, and had already built an audience of over 100,000 subscribers on YouTube. The web app didn\'t exist yet: [[we built it from scratch in React Native Web]], and stood up everything behind it too — the Scaleway hosting and the MongoDB database it ran on.' },
       { list: true, lead: 'There was no fixed role on this one; the work was whatever needed shipping next, on and off over two years. What we delivered [[from a blank repository]]:', items: [
@@ -157,7 +168,7 @@ export const PROJECTS = [
       { text: true, body: 'The honest ending: the product was later wound down. A six-figure YouTube following didn\'t translate into enough paying subscribers, and the company pivoted. That isn\'t a failure of the build — it shipped, it worked, people paid for it — but it\'s a useful reminder that [[a working product and a working business are two different problems]], and engineering only solves the first one.' },
     ],
     stack: [{ title: 'React Native Web' }, { title: 'Stripe' }, { title: 'MongoDB' }, { title: 'Scaleway' }] },
-  { id: 'traqa', meta: ['Independent project', '2025', 'Founder', 'Team of 1', '9 months'], github: 'https://github.com/timohuennebeck/running-app', kind: 'Independent · 02', title: 'Traqa', tint: '#8ee6b0', star: true, tagline: 'A running app that adjusts your training plan every week so it doesn\'t injure you — built after a plan that did.',
+  { id: 'traqa', meta: ['Independent project', '2025', 'Founder', 'Team of 1', '9 months'], github: 'https://github.com/timohuennebeck/running-app', kind: 'Independent · 02', title: 'Traqa', shape: 'edgeOn', tint: '#8ee6b0', tagline: 'A running app that adjusts your training plan every week so it doesn\'t injure you — built after a plan that did.',
     sections: [
       { text: true, body: 'Traqa started with a knee. I got into running in 2024 — a first 5K at Munich\'s B2Run, then 10Ks with colleagues, then the decision to skip the half and go straight for a marathon. A popular training app generated a 20-week plan for me, and it was too much for where I was: about six weeks in I had knee pain, and six weeks before race day I had a full runner\'s knee. The plan had adjusted to keep me on schedule for the marathon; [[it never adjusted to keep me healthy]].' },
       { text: true, body: 'So Traqa generates the plan from who you actually are — experience, weekly mileage, days you can run, terrain, injury history, goal — and then asks for a short check-in every week. The plan changes based on that check-in, with [[staying injury-free as the priority rather than the race date]]. Under the hood: an Expo app with an LLM producing multi-week plans, offline-first run tracking with background GPS, retroactive import, and maps.' },
@@ -178,15 +189,19 @@ export const ABOUT = {
   github: 'https://github.com/timohuennebeck',
   cv: 'Timo-Huennebeck-CV.pdf', // served from public/, resolved against the site's base path
   intro: 'Frontend developer in Munich — three years of React, Next.js and Expo at Horizon Alpha, trainee to senior, lately on Phase6 and its million users. I came from marketing, so I would rather read a funnel than argue about a screen.',
-  detail: 'Three iOS apps of my own, one of them to 12,000 sign-ups. In the space view, the galaxies are client work; the black hole, the sun and the nebula are mine.',
+  detail: 'Three iOS apps of my own, one of them to 12,000 sign-ups.',
   email: 'jantimohuennebeck@gmail.com',
   linkedin: 'https://www.linkedin.com/in/timo-huennebeck',
   twitter: 'https://x.com/TimoHuennebeck',
   toolkit: ['TypeScript', 'React', 'React Native', 'Expo', 'Next.js', 'Astro', 'Tailwind CSS', 'Node.js', 'PostgreSQL', 'Supabase', 'AWS', 'Docker', 'GitLab CI', 'Cypress', 'Sentry', 'Amplitude', 'Claude Code'].map(title => ({ title })),
 };
 
-// UI strings. The app is English only.
+// UI strings. English is the default; content.de.js holds the German.
 export const UI_STRINGS = {
+  locale: 'en-GB',
+  language: 'Language',
+  keyScroll: 'Scroll',
+  keyDrag: 'Drag',
   touchHint: 'Drag to orbit · Tap to open',
   scroll: 'to travel',
   drag: 'to orbit',
@@ -203,4 +218,37 @@ export const UI_STRINGS = {
   fullscreenNudge: 'This experience is best in fullscreen.',
   enterFullscreen: 'Enter fullscreen',
   dismiss: 'Dismiss',
+  factType: 'Type',
+  factWhen: 'When',
+  factRole: 'Role',
+  justMe: 'just me',
+  lowerTeam: true,
+  reached: 'Reached this step',
+  dropped: 'Dropped off',
+  ratingLabel: 'App Store rating',
+  outOf: 'out of',
+  prevScreen: 'Previous screen',
+  nextScreen: 'Next screen',
+  appStoreTop: 'Download on the',
+  playTop: 'Get it on',
+  soon: 'Coming soon',
 };
+
+// The site in one language. German replaces only the words: every project keeps its
+// id, tint, links, shape and numbers from PROJECTS, and takes `meta`, `kind`, `tagline`,
+// `sections`, `stack` and screenshot alt text from content.de.js where it has them.
+export function localize(lang) {
+  if (lang !== 'de') return { projects: PROJECTS, about: ABOUT, ui: UI_STRINGS };
+  return {
+    projects: PROJECTS.map(p => {
+      const de = DE.projects[p.id] || {};
+      const { screenAlts, ...words } = de;
+      return {
+        ...p, ...words,
+        screens: p.screens && p.screens.map((s, i) => ({ ...s, alt: screenAlts?.[i] ?? s.alt })),
+      };
+    }),
+    about: { ...ABOUT, ...DE.about },
+    ui: { ...UI_STRINGS, ...DE.ui },
+  };
+}

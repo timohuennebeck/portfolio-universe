@@ -22,7 +22,7 @@ const INTRO_MS = 8000;
     left. The row shows by itself for the first eight seconds after arrival
     (or until a page opens, or the icon is hovered), then folds into the
     icon — hover only after that. */
-export function Hints({ ui, t, opacity }) {
+export function Hints({ ui, t, opacity, lang, onLang }) {
   const [intro, setIntro] = React.useState(true);
   const [hover, setHover] = React.useState(false);
   React.useEffect(() => {
@@ -37,31 +37,35 @@ export function Hints({ ui, t, opacity }) {
     return (
       <div style={{
         position: 'absolute', left: ui.hudLeft, right: ui.edge, top: ui.hudTop, zIndex: 2,
-        display: 'flex', justifyContent: ui.hudJustify, textAlign: 'right',
+        display: 'flex', justifyContent: ui.hudJustify, alignItems: 'center', gap: 12, textAlign: 'right',
         fontSize: ui.hudSize, lineHeight: 1.4, color: 'rgba(238,242,248,.45)',
         pointerEvents: 'none', opacity, transition: 'opacity .5s',
-      }}><span>{t.touchHint}</span></div>
+      }}>
+        <span>{t.touchHint}</span>
+        <LangSwitch lang={lang} onChange={onLang} t={t} style={{ pointerEvents: opacity ? 'auto' : 'none', marginRight: -5 }} />
+      </div>
     );
   }
   return (
+    <div style={{
+      position: 'absolute', right: ui.edge, top: ui.hudTop, zIndex: 2,
+      display: 'flex', alignItems: 'center', gap: 14,
+      fontSize: ui.hudSize, lineHeight: 1.4, color: 'rgba(238,242,248,.45)',
+      opacity, pointerEvents: opacity ? 'auto' : 'none', transition: 'opacity .5s',
+    }}>
     <div
       // during the intro a hover folds the row instead of opening it
       onMouseEnter={() => (intro ? setIntro(false) : setHover(true))}
       onMouseLeave={() => setHover(false)}
-      style={{
-        position: 'absolute', right: ui.edge, top: ui.hudTop, zIndex: 2,
-        display: 'flex', alignItems: 'center', gap: 22,
-        fontSize: ui.hudSize, lineHeight: 1.4, color: 'rgba(238,242,248,.45)',
-        opacity, pointerEvents: opacity ? 'auto' : 'none', transition: 'opacity .5s',
-      }}
+      style={{ display: 'flex', alignItems: 'center', gap: 22 }}
     >
       <div aria-hidden={!open} style={{
         display: 'flex', gap: 22, opacity: open ? 1 : 0,
         transform: open ? 'none' : 'translateX(8px)', pointerEvents: open ? 'auto' : 'none',
         transition: 'opacity .25s ease, transform .25s ease',
       }}>
-        <span style={hint}><kbd style={kbd}>Scroll</kbd> {t.scroll}</span>
-        <span style={hint}><kbd style={kbd}>Drag</kbd> {t.drag}</span>
+        <span style={hint}><kbd style={kbd}>{t.keyScroll}</kbd> {t.scroll}</span>
+        <span style={hint}><kbd style={kbd}>{t.keyDrag}</kbd> {t.drag}</span>
         <span style={hint}><kbd style={kbd}>Enter</kbd> {t.enter}</span>
       </div>
       <button
@@ -81,6 +85,35 @@ export function Hints({ ui, t, opacity }) {
           <rect x="2" y="6" width="20" height="12" rx="2" /><path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M8 14h8" />
         </svg>
       </button>
+    </div>
+      <span aria-hidden="true" style={{ width: 1, height: 14, background: 'rgba(255,255,255,.16)' }} />
+      <LangSwitch lang={lang} onChange={onLang} t={t} style={{ marginRight: -5 }} />
+    </div>
+  );
+}
+
+/** EN / DE, in the mono of the key hints: the current language bright, the
+    other dim. Sits beside the keyboard glyph in space and beside "Back to
+    space" on a page, so it can be switched while reading. */
+export const LANGS = ['en', 'de'];
+export function LangSwitch({ lang, onChange, t, style }) {
+  return (
+    <div role="group" aria-label={t.language} style={{ display: 'flex', alignItems: 'center', gap: 0, fontFamily: MONO, fontSize: 11, letterSpacing: '.12em', ...style }}>
+      {LANGS.map(l => (
+        <button
+          key={l}
+          type="button"
+          lang={l}
+          aria-pressed={lang === l}
+          onClick={() => onChange(l)}
+          className="gp-quiet"
+          style={{
+            border: 0, background: 'none', padding: '4px 5px', cursor: 'pointer', fontFamily: 'inherit',
+            fontSize: 'inherit', letterSpacing: 'inherit', textTransform: 'uppercase',
+            color: lang === l ? '#eef2f8' : 'rgba(238,242,248,.4)', transition: 'color .3s',
+          }}
+        >{l}</button>
+      ))}
     </div>
   );
 }
