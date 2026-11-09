@@ -65,7 +65,7 @@ export function createSpace(renderer, { hq, PR, nodes }) {
     blending: T.CustomBlending, blendSrc: T.OneFactor, blendDst: T.OneMinusSrcAlphaFactor, blendSrcAlpha: T.ZeroFactor, blendDstAlpha: T.OneFactor });
   const sunMat = new T.ShaderMaterial({ transparent: true, depthWrite: false, depthTest: false, vertexShader: HOLE_VS, fragmentShader: SUN_FS, uniforms: { uTime: shared.uTime, uSpeed: shared.uSpeed, uFade: { value: 0 }, uHov: { value: 0 }, uOrbit: { value: new T.Vector2() } },
     blending: T.CustomBlending, blendSrc: T.OneFactor, blendDst: T.OneMinusSrcAlphaFactor, blendSrcAlpha: T.ZeroFactor, blendDstAlpha: T.OneFactor });
-  const nebulaMat = new T.ShaderMaterial({ transparent: true, depthWrite: false, depthTest: false, vertexShader: HOLE_VS, fragmentShader: NEBULA_FS, uniforms: { uTime: shared.uTime, uSpeed: shared.uSpeed, uFade: { value: 0 }, uHover: { value: new T.Vector2() }, uHov: { value: 0 } },
+  const nebulaMat = new T.ShaderMaterial({ transparent: true, depthWrite: false, depthTest: false, vertexShader: HOLE_VS, fragmentShader: NEBULA_FS, uniforms: { uTime: shared.uTime, uSpeed: shared.uSpeed, uFade: { value: 0 }, uHover: { value: new T.Vector2() }, uHov: { value: 0 }, uTint: { value: new T.Color() } },
     blending: T.CustomBlending, blendSrc: T.OneFactor, blendDst: T.OneMinusSrcAlphaFactor, blendSrcAlpha: T.ZeroFactor, blendDstAlpha: T.OneFactor });
   const galaxies = nodes.map((n, i) => {
     const center = new T.Vector3(...n.pos), tint = new T.Color(n.tint);
@@ -75,8 +75,10 @@ export function createSpace(renderer, { hq, PR, nodes }) {
       return { mesh, glow, center, phase: Math.random() * 6.283, hole: true, fx: holeMat };
     }
     if (n.nebula) {
+      // the gas glows in the destination's tint, its raw hex values (as the neon constant used to be)
+      nebulaMat.uniforms.uTint.value.setHex(parseInt(n.tint.slice(1), 16), T.LinearSRGBColorSpace);
       const mesh = new T.Mesh(new T.PlaneGeometry(64, 64), nebulaMat); mesh.position.copy(center); mesh.renderOrder = -1; mesh.frustumCulled = false; scene.add(mesh);
-      const glow = sprite('#dfff1f', 0); glow.visible = false; scene.add(glow);
+      const glow = sprite(tint, 0); glow.visible = false; scene.add(glow);
       return { mesh, glow, center, phase: Math.random() * 6.283, nebula: true, fx: nebulaMat };
     }
     if (n.star) {
