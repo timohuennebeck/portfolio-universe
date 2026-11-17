@@ -2,10 +2,19 @@
 // projects by id, so tints, links, shapes and every number in a chart stay in one place
 // (content.js) unless a section below repeats them. A project's `sections` replace the
 // English ones whole, so they repeat the chart data — keep it in step when it changes.
+// Its `screens` replace the English ones whole too: the same App Store screens, in German.
 // Reviews that were translated from German into English are given back in German
 // "sinngemäß" (in substance), since the original wording isn't on file.
 
 import { LOQQA_FROM, LOQQA_COMMITS } from './commits.js';
+
+import loqqaPlan from './assets/loqqa/de/plan.webp';
+import loqqaImport from './assets/loqqa/de/import.webp';
+import loqqaLog from './assets/loqqa/de/log.webp';
+import loqqaCompare from './assets/loqqa/de/compare.webp';
+import loqqaSets from './assets/loqqa/de/sets.webp';
+import loqqaHistory from './assets/loqqa/de/history.webp';
+import loqqaKai from './assets/loqqa/de/kai.webp';
 
 export const DE = {
   ui: {
@@ -56,14 +65,14 @@ export const DE = {
       meta: ['Eigenes Projekt', '2026', 'Gründer', 'Team of 1', '1 Monat'],
       kind: 'Eigenes Projekt · 03',
       tagline: 'Ein Trainingslog, das dir sagt, wo du stehst und was als Nächstes kommt — gebaut in einem Monat, mit Claude Code.',
-      screenAlts: [
-        'Ein Plan, der zu dir passt: die Trainingswoche mit dem aktuellen Push-Pull-Legs-Block',
-        'Du wechselst die App? Bring dein Training mit: Import aus einer CSV-, TSV- oder Excel-Datei',
-        'Smarte Vorschläge für jeden Satz: Gewicht und Wiederholungen während des Workouts',
-        'Sieh, wie du dich veränderst: zwei Fortschrittsfotos nebeneinander, 147 Tage auseinander',
-        'Kein Muskel bleibt zurück: 163 Brust-Sätze in 90 Tagen, nach Übung',
-        'Deine Bestleistungen immer im Blick: Höchstgewicht pro Einheit für eine Übung',
-        'Dein KI-Coach ist immer dabei: Kai erklärt, wie sich das Bankdrücken verbessert hat',
+      screens: [ // the App Store screens, German, in their store order
+        { src: loqqaPlan, alt: 'Ein Plan, auf dich zugeschnitten: die Trainingswoche mit dem aktuellen Push-Pull-Beine-Block' },
+        { src: loqqaImport, alt: 'App wechseln? Training mitnehmen: Import aus einer CSV-, TSV- oder Excel-Datei' },
+        { src: loqqaLog, alt: 'Smarte Vorschläge für jeden Satz: Gewicht und Wiederholungen während des Trainings' },
+        { src: loqqaCompare, alt: 'Sieh, wie du dich veränderst: zwei Fortschrittsfotos nebeneinander, 147 Tage auseinander' },
+        { src: loqqaSets, alt: 'Kein Muskel kommt zu kurz: 163 Brust-Sätze in 90 Tagen, nach Übung' },
+        { src: loqqaHistory, alt: 'Deine PRs, immer im Blick: höchstes Gewicht pro Training für eine Übung' },
+        { src: loqqaKai, alt: 'Dein KI-Coach ist immer dabei: Kai erklärt, wie sich das Bankdrücken verbessert hat' },
       ],
       sections: [
         { text: true, body: 'Loqqa hat mit einer Tabelle angefangen. Ich habe mein Krafttraining darin festgehalten — Sätze, Wiederholungen und Gewichte, Woche für Woche — und als ich nach einem Läuferknie zurückkam, hatte ich Monate an Daten und [[keine Ahnung, wo ich eigentlich stand]]: welche Übungen noch Fortschritte machten, welche Muskeln ich still und leise nicht mehr trainierte, ob sich das alles überhaupt gelohnt hatte. Die Daten waren alle da. Beantwortet haben sie nichts.' },

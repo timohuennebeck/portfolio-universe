@@ -24,6 +24,7 @@ import loqqaKai from './assets/loqqa/kai.webp';
 //               omitted, the page opens straight into the copy
 //   screens   · optional app screenshots [{src, alt}], shown as a sideways-scrolling row at the
 //               top of the page; imported from src/assets, transparent around the phone
+//               (German: src/assets/loqqa/de, listed in content.de.js)
 //   stack     · chips under the tagline
 //   github    · optional; shortcut for a single GitHub link
 //   links     · optional; [{url, label?, icon?}] — one dashed text link each, for
@@ -236,18 +237,11 @@ export const UI_STRINGS = {
 
 // The site in one language. German replaces only the words: every project keeps its
 // id, tint, links, shape and numbers from PROJECTS, and takes `meta`, `kind`, `tagline`,
-// `sections`, `stack` and screenshot alt text from content.de.js where it has them.
+// `sections`, `stack` and the app screenshots from content.de.js where it has them.
 export function localize(lang) {
   if (lang !== 'de') return { projects: PROJECTS, about: ABOUT, ui: UI_STRINGS };
   return {
-    projects: PROJECTS.map(p => {
-      const de = DE.projects[p.id] || {};
-      const { screenAlts, ...words } = de;
-      return {
-        ...p, ...words,
-        screens: p.screens && p.screens.map((s, i) => ({ ...s, alt: screenAlts?.[i] ?? s.alt })),
-      };
-    }),
+    projects: PROJECTS.map(p => ({ ...p, ...DE.projects[p.id] })),
     about: { ...ABOUT, ...DE.about },
     ui: { ...UI_STRINGS, ...DE.ui },
   };
